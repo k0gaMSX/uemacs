@@ -7,7 +7,7 @@
 #include "edef.h"
 #include "efunc.h"
 
-#if (FILOCK && BSD) || SVR4
+#if SVR4
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -36,7 +36,7 @@ int gethostname(char *name, int namelen)
 
 /**********************
  *
- * if successful, returns NULL  
+ * if successful, returns NULL
  * if file locked, returns username of person locking the file
  * if other error, returns "LOCK ERROR: explanation"
  *

@@ -48,23 +48,13 @@
 
 /* Machine/OS definitions. */
 
-#if defined(AUTOCONF) || defined(BSD) || defined(SYSV)
+#if defined(AUTOCONF) || defined(SYSV)
 
 /* Make an intelligent guess about the target system. */
-
-
-  #if defined(BSD) || defined(sun) || defined(ultrix) || (defined(vax) && defined(unix)) || defined(ultrix) || defined(__osf__)
-    #ifndef BSD
-      #define BSD 1 /* Berkeley UNIX */
-    #endif
-  #else
-    #define	BSD 0
-  #endif
 
   #if defined(SVR4) || defined(__linux__)	/* ex. SunOS 5.3 */
     #define SVR4 1
     #define SYSV 1
-    #undef BSD
   #endif
 
   #if defined(SYSV) || defined(u3b2) || defined(_AIX) || (defined(i386) && defined(unix)) || defined(__hpux)
@@ -78,7 +68,6 @@
 #else
 
   #define V7      0		/* V7 UNIX or Coherent or BSD4.2 */
-  #define BSD	  0		/* UNIX BSD 4.2 and ULTRIX      */
   #define USG	  0		/* UNIX system V                */
 
 #endif				/*autoconf */
@@ -111,7 +100,7 @@
 
 #else
 
-  #define	UNIX	(V7 | BSD | USG)
+  #define	UNIX	(V7 | USG)
 
   #define	VT220	UNIX
   #define	VT100	0
@@ -122,8 +111,6 @@
 
   #ifdef  SVR4
     #define     FILOCK  1
-  #else
-    #define	FILOCK	BSD
   #endif
 
   #define	XONXOFF	UNIX
@@ -143,7 +130,7 @@
 
 /* Define some ability flags. */
 
-#if	V7 | USG | BSD
+#if	V7 | USG
   #define	ENVFUNC	1
 #else
   #define	ENVFUNC	0
@@ -219,7 +206,7 @@
 #define	BELL	0x07		/* a bell character             */
 #define	TAB	0x09		/* a tab character              */
 
-#if	V7 | USG | BSD
+#if	V7 | USG
   #define	PATHCHR	':'
 #else
   #define	PATHCHR	';'

@@ -11,7 +11,7 @@
 /*	possible names and paths of help files under different OSs	*/
 static char *pathname[] =
 
-#if	V7 | BSD | USG
+#if	V7 | USG
 {
 	".emacsrc", "emacs.hlp",
 #if	PKCODE

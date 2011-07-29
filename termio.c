@@ -8,6 +8,7 @@
  *	modified by Petri Kutvonen
  */
 
+
 #ifndef POSIX
 
 #include        <stdio.h>
@@ -29,7 +30,7 @@ struct termio ntermio;		/* charactoristics to use inside */
 #endif
 #endif
 
-#if	V7 | BSD
+#if	V7
 #include        <sgtty.h>	/* for stty/gtty functions */
 #include	<signal.h>
 struct sgttyb ostate;		/* saved tty state */
@@ -44,19 +45,7 @@ struct tchars ntchars = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 
 				/* A lot of nothing */
 #endif
-#if	BSD & PKCODE
-struct ltchars oltchars;	/* Saved terminal local special character set */
-struct ltchars nltchars = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
 
-				/* A lot of nothing */
-#endif
-
-#if BSD
-#include <sys/ioctl.h>		/* to get at the typeahead */
-extern int rtfrmshell();	/* return from suspended shell */
-#define	TBUFSIZ	128
-char tobuf[TBUFSIZ];		/* terminal output buffer */
-#endif
 #endif
 
 #if	__hpux | SVR4
@@ -93,7 +82,7 @@ void ttopen(void)
 	kbdpoll = FALSE;
 #endif
 
-#if     V7 | BSD
+#if     V7
 	gtty(0, &ostate);	/* save old state */
 	gtty(0, &nstate);	/* get base of new state */
 #if	XONXOFF
@@ -105,17 +94,6 @@ void ttopen(void)
 	stty(0, &nstate);	/* set mode */
 	ioctl(0, TIOCGETC, &otchars);	/* Save old characters */
 	ioctl(0, TIOCSETC, &ntchars);	/* Place new character into K */
-#if	BSD & PKCODE
-	ioctl(0, TIOCGLTC, &oltchars);	/* Save old local characters */
-	ioctl(0, TIOCSLTC, &nltchars);	/* New local characters */
-#endif
-#if	BSD
-	/* provide a smaller terminal output buffer so that
-	   the type ahead detection works better (more often) */
-	setbuffer(stdout, &tobuf[0], TBUFSIZ);
-	signal(SIGTSTP, SIG_DFL);	/* set signals so that we can */
-	signal(SIGCONT, rtfrmshell);	/* suspend & restart emacs */
-#endif
 #endif
 
 #if	__hpux | SVR4
@@ -150,12 +128,9 @@ void ttclose(void)
 	fcntl(0, F_SETFL, kbdflgs);
 #endif
 
-#if     V7 | BSD
+#if     V7
 	stty(0, &ostate);
 	ioctl(0, TIOCSETC, &otchars);	/* Place old character into K */
-#if	BSD & PKCODE
-	ioctl(0, TIOCSLTC, &oltchars);	/* Place old local character into K */
-#endif
 #endif
 }
 
@@ -167,7 +142,7 @@ void ttclose(void)
  */
 void ttputc(c)
 {
-#if     V7 | USG | BSD
+#if     V7 | USG
 	fputc(c, stdout);
 #endif
 }
@@ -178,7 +153,7 @@ void ttputc(c)
  */
 int ttflush(void)
 {
-#if     V7 | USG | BSD
+#if     V7 | USG
 /*
  * Add some terminal output success checking, sometimes an orphaned
  * process may be left looping on SunOS 4.1.
@@ -207,7 +182,7 @@ int ttflush(void)
  */
 ttgetc()
 {
-#if     V7 | BSD
+#if     V7
 	return 255 & fgetc(stdin);	/* 8BIT P.K. */
 #endif
 
@@ -231,13 +206,6 @@ ttgetc()
 
 typahead()
 {
-#if	BSD
-	int x;			/* holds # of pending chars */
-
-	return (ioctl(0, FIONREAD, &x) < 0) ? 0 : x;
-#endif
-
-
 #if	USG
 	if (!kbdqp) {
 		if (!kbdpoll && fcntl(0, F_SETFL, kbdflgs | O_NDELAY) < 0)

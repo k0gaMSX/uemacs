@@ -154,7 +154,7 @@ struct key_tab keytab[NBINDS] = {
 	,
 	{CTLX | 'C', spawncli}
 	,
-#if	BSD | __hpux | SVR4
+#if	__hpux | SVR4
 	{CTLX | 'D', bktoshell}
 	,
 #endif
@@ -286,10 +286,6 @@ struct key_tab keytab[NBINDS] = {
 	{META | 'S', forwsearch}
 	,			/* alternative P.K.     */
 #else
-#if	BSD
-	{META | 'S', bktoshell}
-	,
-#endif
 #endif
 	{META | 'U', upperword}
 	,

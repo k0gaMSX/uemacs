@@ -111,10 +111,6 @@ int main(int argc, char **argv)
 #endif
 	int newc;
 
-#if	PKCODE & BSD
-	sleep(1); /* Time for window manager. */
-#endif
-
 #if	UNIX
 #ifdef SIGWINCH
 	signal(SIGWINCH, sizesignal);
@@ -477,7 +473,7 @@ int execute(int c, int f, int n)
 
 #if	PKCODE
 	if ((c >= 0x20 && c <= 0x7E)	/* Self inserting.      */
-#if	BSD || USG	/* 8BIT P.K. */
+#if	USG	/* 8BIT P.K. */
 	    || (c >= 0xA0 && c <= 0xFE)) {
 #else
 	    ) {
@@ -586,7 +582,7 @@ int quit(int f, int n)
 	    /* User says it's OK.   */
 	    || (s =
 		mlyesno("Modified buffers exist. Leave anyway")) == TRUE) {
-#if	(FILOCK && BSD) || SVR4
+#if	SVR4
 		if (lockrel() != TRUE) {
 			TTputc('\n');
 			TTputc('\r');

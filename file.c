@@ -222,7 +222,7 @@ int readin(char *fname, int lockfl)
 	int lflag;		/* any lines longer than allowed? */
 	char mesg[NSTRING];
 
-#if	(FILOCK && BSD) || SVR4
+#if	SVR4
 	if (lockfl && lockchk(fname) == ABORT)
 #if PKCODE
 	{
@@ -334,7 +334,7 @@ void makename(char *bname, char *fname)
 	while (*cp1 != 0)
 		++cp1;
 
-#if     V7 | USG | BSD
+#if     V7 | USG
 	while (cp1 != &fname[0] && cp1[-1] != '/')
 		--cp1;
 #endif

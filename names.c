@@ -200,7 +200,7 @@ struct name_bind names[] = {
 #if	PROC
 	{"store-procedure", storeproc},
 #endif
-#if	BSD | __hpux | SVR4
+#if	__hpux | SVR4
 	{"suspend-emacs", bktoshell},
 #endif
 	{"transpose-characters", twiddle},

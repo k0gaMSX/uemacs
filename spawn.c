@@ -13,7 +13,7 @@
 #include "efunc.h"
 
 
-#if     V7 | USG | BSD
+#if     V7 | USG
 #include        <signal.h>
 #ifdef SIGWINCH
 extern int chg_width, chg_height;
@@ -30,7 +30,7 @@ extern void sizesignal(int);
  */
 int spawncli(int f, int n)
 {
-#if     V7 | USG | BSD
+#if     V7 | USG
 	char *cp;
 #endif
 
@@ -38,18 +38,15 @@ int spawncli(int f, int n)
 	if (restflag)
 		return resterr();
 
-#if     V7 | USG | BSD
+#if     V7 | USG
 	movecursor(term.t_nrow, 0);	/* Seek to last line.   */
 	TTflush();
 	TTclose();		/* stty to old settings */
 	if ((cp = getenv("SHELL")) != NULL && *cp != '\0')
 		system(cp);
 	else
-#if	BSD
-		system("exec /bin/csh");
-#else
 		system("exec /bin/sh");
-#endif
+
 	sgarbf = TRUE;
 	sleep(2);
 	TTopen();
@@ -68,7 +65,7 @@ int spawncli(int f, int n)
 #endif
 }
 
-#if	BSD | __hpux | SVR4
+#if	__hpux | SVR4
 
 int bktoshell(int f, int n)
 {				/* suspend MicroEMACS and wait to wake up */
@@ -105,7 +102,7 @@ int spawn(int f, int n)
 	if (restflag)
 		return resterr();
 
-#if     V7 | USG | BSD
+#if     V7 | USG
 	if ((s = mlreply("!", line, NLINE)) != TRUE)
 		return s;
 	TTflush();
@@ -142,7 +139,7 @@ int execprg(int f, int n)
 	if (restflag)
 		return resterr();
 
-#if     V7 | USG | BSD
+#if     V7 | USG
 	if ((s = mlreply("!", line, NLINE)) != TRUE)
 		return s;
 	TTputc('\n');		/* Already have '\r'    */
@@ -205,7 +202,7 @@ int pipecmd(int f, int n)
 			return FALSE;
 	}
 
-#if     V7 | USG | BSD
+#if     V7 | USG
 	TTflush();
 	TTclose();		/* stty to old modes    */
 	strcat(line, ">");
@@ -279,7 +276,7 @@ int filter_buffer(int f, int n)
 		return FALSE;
 	}
 
-#if     V7 | USG | BSD
+#if     V7 | USG
 	TTputc('\n');		/* Already have '\r'    */
 	TTflush();
 	TTclose();		/* stty to old modes    */
