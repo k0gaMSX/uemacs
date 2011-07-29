@@ -607,7 +607,7 @@ int eq(unsigned char bc, unsigned char pc)
  *	an error.  Display the old pattern, in the style of Jeff Lomicka.
  *	There is some do-it-yourself control expansion.  Change to using
  *	<META> to delimit the end-of-pattern to allow <NL>s in the search
- *	string. 
+ *	string.
  */
 static int readpattern(char *prompt, char *apat, int srch)
 {
@@ -1193,7 +1193,7 @@ static int mcstr(void)
 	if (status) {
 		rtpcm = &tapcm[0];
 		while (--mj >= 0) {
-#if	MSC | TURBO | VMS | USG | BSD | V7
+#if	VMS | USG | BSD | V7
 			*rtpcm++ = *--mcptr;
 #endif
 		}

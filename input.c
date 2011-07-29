@@ -14,13 +14,7 @@
 #include "efunc.h"
 #include "wrapper.h"
 
-#if	PKCODE
-#if     MSDOS && TURBO
-#include	<dir.h>
-#endif
-#endif
-
-#if	PKCODE && (UNIX || (MSDOS && TURBO))
+#if	PKCODE && UNIX
 #define	COMPLC	1
 #else
 #define COMPLC	0
@@ -310,15 +304,6 @@ int get1key(void)
 	/* get a keystroke */
 	c = tgetc();
 
-#if	MSDOS
-	if (c == 0) {		/* Apply SPEC prefix    */
-		c = tgetc();
-		if (c >= 0x00 && c <= 0x1F)	/* control key? */
-			c = CONTROL | (c + '@');
-		return SPEC | c;
-	}
-#endif
-
 	if (c >= 0x00 && c <= 0x1F)	/* C0 control -> C-     */
 		c = CONTROL | (c + '@');
 	return c;
@@ -445,10 +430,6 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 	int quotef;	/* are we quoting the next char? */
 #if	COMPLC
 	int ffile, ocpos, nskip = 0, didtry = 0;
-#if     MSDOS
-	struct ffblk ffblk;
-	char *fcp;
-#endif
 #if	UNIX
 	static char tmp[] = "/tmp/meXXXXXX";
 	FILE *tmpf = NULL;
@@ -547,10 +528,6 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 			   && ffile) {
 			/* TAB, complete file name */
 			char ffbuf[255];
-#if	MSDOS
-			char sffbuf[128];
-			int lsav = -1;
-#endif
 			int n, iswild = 0;
 
 			didtry = 1;
@@ -569,13 +546,6 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 				}
 				if (buf[cpos] == '*' || buf[cpos] == '?')
 					iswild = 1;
-#if	MSDOS
-				if (lsav < 0 && (buf[cpos] == '\\' ||
-						 buf[cpos] == '/' ||
-						 buf[cpos] == ':'
-						 && cpos == 1))
-					lsav = cpos;
-#endif
 			}
 			TTflush();
 			if (nskip < 0) {
@@ -595,11 +565,7 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 				system(ffbuf);
 				tmpf = fopen(tmp, "r");
 #endif
-#if	MSDOS
-				strcpy(sffbuf, buf);
-				if (!iswild)
-					strcat(sffbuf, "*.*");
-#endif
+
 				nskip = 0;
 			}
 #if	UNIX
@@ -607,14 +573,6 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 			for (n = nskip; n > 0; n--)
 				while ((c = getc(tmpf)) != EOF
 				       && c != ' ');
-#endif
-#if	MSDOS
-			if (nskip == 0) {
-				strcpy(ffbuf, sffbuf);
-				c = findfirst(ffbuf, &ffblk,
-					      FA_DIREC) ? '*' : ' ';
-			} else if (nskip > 0)
-				c = findnext(&ffblk) ? 0 : ' ';
 #endif
 			nskip++;
 
@@ -625,16 +583,6 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 #if	UNIX
 			while ((c = getc(tmpf)) != EOF && c != '\n'
 			       && c != ' ' && c != '*')
-#endif
-#if	MSDOS
-				if (c == '*')
-					fcp = sffbuf;
-				else {
-					strncpy(buf, sffbuf, lsav + 1);
-					cpos = lsav + 1;
-					fcp = ffblk.ff_name;
-				}
-			while (c != 0 && (c = *fcp++) != 0 && c != '*')
 #endif
 			{
 				if (cpos < nbuf - 1)

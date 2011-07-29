@@ -38,7 +38,7 @@ struct video {
 #define	VFCOL	0x0010		/* color change requested       */
 
 static struct video **vscreen;		/* Virtual screen. */
-#if	MEMMAP == 0 || SCROLLCODE
+#if	SCROLLCODE
 static struct video **pscreen;		/* Physical screen. */
 #endif
 
@@ -88,7 +88,7 @@ void vtinit(void)
 	TTrev(FALSE);
 	vscreen = xmalloc(term.t_mrow * sizeof(struct video *));
 
-#if	MEMMAP == 0 || SCROLLCODE
+#if	SCROLLCODE
 	pscreen = xmalloc(term.t_mrow * sizeof(struct video *));
 #endif
 	for (i = 0; i < term.t_mrow; ++i) {
@@ -99,7 +99,7 @@ void vtinit(void)
 		vp->v_rbcolor = 0;
 #endif
 		vscreen[i] = vp;
-#if	MEMMAP == 0 || SCROLLCODE
+#if	SCROLLCODE
 		vp = xmalloc(sizeof(struct video) + term.t_mcol);
 		vp->v_flag = 0;
 		pscreen[i] = vp;
@@ -115,12 +115,12 @@ void vtfree(void)
 	int i;
 	for (i = 0; i < term.t_mrow; ++i) {
 		free(vscreen[i]);
-#if	MEMMAP == 0 || SCROLLCODE
+#if	SCROLLCODE
 		free(pscreen[i]);
 #endif
 	}
 	free(vscreen);
-#if	MEMMAP == 0 || SCROLLCODE
+#if	SCROLLCODE
 	free(pscreen);
 #endif
 }
@@ -201,7 +201,7 @@ static void vtputc(unsigned char c)
 		vtputc(hex[c & 15]);
 		return;
 	}
-	
+
 	if (vtcol >= 0)
 		vp->v_text[vtcol] = c;
 	++vtcol;
@@ -317,7 +317,7 @@ int update(int force)
 	/* recalc the current hardware cursor location */
 	updpos();
 
-#if	MEMMAP && ! SCROLLCODE
+#if	SCROLLCODE
 	/* update the cursor and flush the buffers */
 	movecursor(currow, curcol - lbound);
 #endif
@@ -603,7 +603,7 @@ void updgar(void)
 		vscreen[i]->v_fcolor = gfcolor;
 		vscreen[i]->v_bcolor = gbcolor;
 #endif
-#if	MEMMAP == 0 || SCROLLCODE
+#if	SCROLLCODE
 		txt = pscreen[i]->v_text;
 		for (j = 0; j < term.t_ncol; ++j)
 			txt[j] = ' ';
@@ -647,7 +647,7 @@ int updupd(int force)
 			if (force == FALSE && typahead())
 				return TRUE;
 #endif
-#if	MEMMAP && ! SCROLLCODE
+#if	!SCROLLCODE
 			updateline(i, vp1);
 #else
 			updateline(i, vp1, pscreen[i]);
@@ -763,9 +763,6 @@ static int scrolls(int inserts)
 				vpp->v_flag &= ~VFREV;
 				vpp->v_flag |= ~VFREQ;
 			}
-#if	MEMMAP
-			vscreen[to + i]->v_flag &= ~VFCHG;
-#endif
 		}
 		if (inserts) {
 			from = target;
@@ -774,7 +771,6 @@ static int scrolls(int inserts)
 			from = target + count;
 			to = match + count;
 		}
-#if	MEMMAP == 0
 		for (i = from; i < to; i++) {
 			char *txt;
 			txt = pscreen[i]->v_text;
@@ -782,7 +778,6 @@ static int scrolls(int inserts)
 				txt[j] = ' ';
 			vscreen[i]->v_flag |= VFCHG;
 		}
-#endif
 		return TRUE;
 	}
 	return FALSE;
@@ -860,41 +855,7 @@ static void updext(void)
  * row and column variables. It does try an exploit erase to end of line. The
  * RAINBOW version of this routine uses fast video.
  */
-#if	MEMMAP
-/*	UPDATELINE specific code for the IBM-PC and other compatables */
 
-static int updateline(int row, struct video *vp1, struct video *vp2)
-{
-#if	SCROLLCODE
-	char *cp1;
-	char *cp2;
-	int nch;
-
-	cp1 = &vp1->v_text[0];
-	cp2 = &vp2->v_text[0];
-	nch = term.t_ncol;
-	do {
-		*cp2 = *cp1;
-		++cp2;
-		++cp1;
-	}
-	while (--nch);
-#endif
-#if	COLOR
-	scwrite(row, vp1->v_text, vp1->v_rfcolor, vp1->v_rbcolor);
-	vp1->v_fcolor = vp1->v_rfcolor;
-	vp1->v_bcolor = vp1->v_rbcolor;
-#else
-	if (vp1->v_flag & VFREQ)
-		scwrite(row, vp1->v_text, 0, 7);
-	else
-		scwrite(row, vp1->v_text, 7, 0);
-#endif
-	vp1->v_flag &= ~(VFCHG | VFCOL);	/* flag this line as changed */
-
-}
-
-#else
 
 /*
  * updateline()
@@ -1055,7 +1016,6 @@ static int updateline(int row, struct video *vp1, struct video *vp2)
 	return TRUE;
 #endif
 }
-#endif
 
 /*
  * Redisplay the mode line for the window pointed to by the "wp". This is the
