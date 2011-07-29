@@ -16,11 +16,6 @@
 #define	RAMSHOW	0		/* auto dynamic RAM reporting */
 
 
-#if !defined(ASCII) && !defined(EBCDIC)
-  #define ASCII	1  /* always using ASCII char sequences for now    */
-  #define EBCDIC	0  /* later IBM mainfraim versions will use EBCDIC */
-#endif
-
 /*	Configuration options	*/
 
 #define CVMVAS  1  /* arguments to page forward/back in pages      */
@@ -269,36 +264,26 @@
   #endif
 #endif
 
-#if	ASCII
 
-  #define	DIFCASE		0x20
+#define	DIFCASE		0x20
 
-  #if	NATIONL
+#if	NATIONL
     #define LASTUL ']'
     #define LASTLL '}'
-  #else
+#else
     #define LASTUL 'Z'
     #define LASTLL 'z'
-  #endif
-
-
-  #define isletter(c)	isxletter((0xFF & (c)))
-  #define islower(c)	isxlower((0xFF & (c)))
-  #define isupper(c)	isxupper((0xFF & (c)))
-
-    #define isxletter(c)	(('a' <= c && LASTLL >= c) || ('A' <= c && LASTUL >= c) || (192<=c && c<=255))
-  #define isxlower(c)	(('a' <= c && LASTLL >= c) || (224 <= c && 252 >= c))
-  #define isxupper(c)	(('A' <= c && LASTUL >= c) || (192 <= c && 220 >= c))
-#elif EBCDIC
-
-  #define	DIFCASE		0x40
-  #define isletter(c)	(('a' <= c && 'i' >= c) || ('j' <= c && 'r' >= c) || ('s' <= c && 'z' >= c) || ('A' <= c && 'I' >= c) || ('J' <= c && 'R' >= c) || ('S' <= c && 'Z' >= c))
-  #define islower(c)	(('a' <= c && 'i' >= c) || ('j' <= c && 'r' >= c) || ('s' <= c && 'z' >= c))
-  #if	PKCODE
-    #define isupper(c)	(('A' <= c && 'I' >= c) || ('J' <= c && 'R' >= c) || ('S' <= c && 'Z' >= c))
-  #endif
-
 #endif
+
+
+#define isletter(c)	isxletter((0xFF & (c)))
+#define islower(c)	isxlower((0xFF & (c)))
+#define isupper(c)	isxupper((0xFF & (c)))
+
+#define isxletter(c)	(('a' <= c && LASTLL >= c) || ('A' <= c && LASTUL >= c) || (192<=c && c<=255))
+#define isxlower(c)	(('a' <= c && LASTLL >= c) || (224 <= c && 252 >= c))
+#define isxupper(c)	(('A' <= c && LASTUL >= c) || (192 <= c && 220 >= c))
+
 
 /*	Dynamic RAM tracking and reporting redefinitions	*/
 
