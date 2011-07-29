@@ -9,15 +9,15 @@
 #define EPATH_H_
 
 /*	possible names and paths of help files under different OSs	*/
-static char *pathname[] =
-
+static char *pathname[] = {
 #if	V7 | USG
-{
 	".emacsrc", "emacs.hlp",
-#if	PKCODE
+  #if	PKCODE
 	    "/usr/global/lib/", "/usr/local/bin/", "/usr/local/lib/",
+  #endif
+        "/usr/local/", "/usr/lib/",
 #endif
-"/usr/local/", "/usr/lib/", ""};
-#endif
+
+        ""};
 
 #endif  /* EPATH_H_ */
