@@ -331,11 +331,10 @@ int getcmd(void)
 	if (c == (CONTROL | '[')) {
 		c = get1key();
 
-handle_CSI:
 #if VT220
 		if (c == '[' || c == 'O') {	/* CSI P.K. */
+handle_CSI:		c = get1key();
 
-			c = get1key();
 			if (c >= 'A' && c <= 'D')
 				return SPEC | c | cmask;
 			if (c >= 'E' && c <= 'z' && c != 'i' && c != 'c')
@@ -371,6 +370,8 @@ handle_CSI:
 			cmask = META;
 			goto proc_metac;
 		}
+#else
+        handle_CSI:
 #endif
 		if (islower(c))	/* Force to upper */
 			c ^= DIFCASE;
