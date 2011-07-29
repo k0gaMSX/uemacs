@@ -10,114 +10,16 @@
 
 #define MAXCOL	500
 #define MAXROW	500
-
-#ifdef	MSDOS
-#undef	MSDOS
-#endif
-#ifdef	EGA
-#undef	EGA
-#endif
-#ifdef	CTRLZ
-#undef	CTRLZ
-#endif
-
-/* Machine/OS definitions. */
-
-#if defined(AUTOCONF) || defined(MSDOS) || defined(BSD) || defined(SYSV) || defined(VMS)
-
-/* Make an intelligent guess about the target system. */
-
-#if defined(__TURBOC__)
-#define MSDOS 1 /* MS/PC DOS 3.1-4.0 with Turbo C 2.0 */
-#else
-#define	MSDOS 0
-#endif
-
-#if defined(BSD) || defined(sun) || defined(ultrix) || (defined(vax) && defined(unix)) || defined(ultrix) || defined(__osf__)
-#ifndef BSD
-#define BSD 1 /* Berkeley UNIX */
-#endif
-#else
-#define	BSD 0
-#endif
-
-#if defined(SVR4) || defined(__linux__)	/* ex. SunOS 5.3 */
-#define SVR4 1
-#define SYSV 1
-#undef BSD
-#endif
-
-#if defined(SYSV) || defined(u3b2) || defined(_AIX) || (defined(i386) && defined(unix)) || defined(__hpux)
-#define	USG 1 /* System V UNIX */
-#else
-#define	USG 0
-#endif
-
-#if defined(VMS) || (defined(vax) && ! defined(unix))
-#define VMS 1 /* VAX/VMS */
-#else
-#define VMS 0
-#endif
-
-#define	V7 0 /* No more. */
-
-#else
-
-#define MSDOS   1		/* MS-DOS                       */
-#define V7      0		/* V7 UNIX or Coherent or BSD4.2 */
-#define	BSD	0		/* UNIX BSD 4.2 and ULTRIX      */
-#define	USG	0		/* UNIX system V                */
-#define VMS     0		/* VAX/VMS                      */
-
-#endif				/*autoconf */
-
-#ifndef	AUTOCONF
-
-/*	Compiler definitions			*/
-#define	UNIX	0		/* a random UNIX compiler */
-#define	MSC	0		/* MicroSoft C compiler, versions 3 up */
-#define	TURBO	1		/* Turbo C/MSDOS */
-
-#else
-
-#define	UNIX	(V7 | BSD | USG)
-#define	MSC	0
-#define	TURBO	MSDOS
-
-#endif				/*autoconf */
-
 /*	Debugging options	*/
 
 #define	RAMSIZE	0		/* dynamic RAM memory usage tracking */
 #define	RAMSHOW	0		/* auto dynamic RAM reporting */
 
-#ifndef	AUTOCONF
 
-/*   Special keyboard definitions            */
-
-#define VT220	0		/* Use keypad escapes P.K.      */
-#define VT100   0		/* Handle VT100 style keypad.   */
-
-/*	Terminal Output definitions		*/
-
-#define ANSI    0		/* ANSI escape sequences        */
-#define	VMSVT	0		/* various VMS terminal entries */
-#define VT52    0		/* VT52 terminal (Zenith).      */
-#define TERMCAP 0		/* Use TERMCAP                  */
-#define	IBMPC	1		/* IBM-PC CGA/MONO/EGA driver   */
-
-#else
-
-#define	VT220	(UNIX | VMS)
-#define	VT100	0
-
-#define	ANSI	0
-#define	VMSVT	VMS
-#define	VT52	0
-#define	TERMCAP	UNIX
-#define	IBMPC	MSDOS
-
-#endif /* Autoconf. */
+#if !defined(ASCII) && !defined(EBCDIC)
+  #define ASCII	1  /* always using ASCII char sequences for now    */
+  #define EBCDIC	0  /* later IBM mainfraim versions will use EBCDIC */
+#endif
 
 /*	Configuration options	*/
 
@@ -132,21 +34,6 @@
 #define	NBRACE	1  /* new style brace matching command             */
 #define	REVSTA	1  /* Status line appears in reverse video         */
 
-#ifndef	AUTOCONF
-
-#define	COLOR	1  /* color commands and windows                   */
-#define	FILOCK	0  /* file locking under unix BSD 4.2              */
-
-#else
-
-#define	COLOR	MSDOS
-#ifdef  SVR4
-#define FILOCK  1
-#else
-#define	FILOCK	BSD
-#endif
-
-#endif /* Autoconf. */
 
 #define	ISRCH	1  /* Incremental searches like ITS EMACS          */
 #define	WORDPRO	1  /* Advanced word processing features            */
@@ -157,20 +44,135 @@
 #define	PROC	1  /* named procedures                             */
 #define	CLEAN	0  /* de-alloc memory on exit                      */
 
-#define ASCII	1  /* always using ASCII char sequences for now    */
-#define EBCDIC	0  /* later IBM mainfraim versions will use EBCDIC */
 
-#ifndef	AUTOCONF
 
-#define	XONXOFF	0  /* don't disable XON-XOFF flow control P.K.     */
-#define	NATIONL	0  /* interprete [,],\,{,},| as characters P.K.    */
+#ifdef	MSDOS
+#undef	MSDOS
+#endif
+#ifdef	EGA
+#undef	EGA
+#endif
+#ifdef	CTRLZ
+#undef	CTRLZ
+#endif
+
+#ifdef	FALSE
+#undef	FALSE
+#endif
+#ifdef	TRUE
+#undef	TRUE
+#endif
+
+/* Machine/OS definitions. */
+
+#if defined(AUTOCONF) || defined(MSDOS) || defined(BSD) || defined(SYSV) || defined(VMS)
+
+/* Make an intelligent guess about the target system. */
+
+  #if defined(__TURBOC__)
+    #define     MSDOS 1 /* MS/PC DOS 3.1-4.0 with Turbo C 2.0 */
+  #else
+    #define	MSDOS 0
+  #endif
+
+  #if defined(BSD) || defined(sun) || defined(ultrix) || (defined(vax) && defined(unix)) || defined(ultrix) || defined(__osf__)
+    #ifndef BSD
+      #define BSD 1 /* Berkeley UNIX */
+    #endif
+  #else
+    #define	BSD 0
+  #endif
+
+  #if defined(SVR4) || defined(__linux__)	/* ex. SunOS 5.3 */
+    #define SVR4 1
+    #define SYSV 1
+    #undef BSD
+  #endif
+
+  #if defined(SYSV) || defined(u3b2) || defined(_AIX) || (defined(i386) && defined(unix)) || defined(__hpux)
+    #define	USG 1 /* System V UNIX */
+  #else
+    #define	USG 0
+  #endif
+
+  #if defined(VMS) || (defined(vax) && ! defined(unix))
+    #define VMS 1 /* VAX/VMS */
+  #else
+    #define VMS 0
+  #endif
+
+  #define	V7 0 /* No more. */
 
 #else
 
-#define	XONXOFF	(UNIX | VMS)
-#define	NATIONL	(UNIX | VMS)
+  #define MSDOS   1		/* MS-DOS                       */
+  #define V7      0		/* V7 UNIX or Coherent or BSD4.2 */
+  #define BSD	  0		/* UNIX BSD 4.2 and ULTRIX      */
+  #define USG	  0		/* UNIX system V                */
+  #define VMS     0		/* VAX/VMS                      */
 
-#endif /* Autoconf. */
+#endif				/*autoconf */
+
+
+
+/****************************************************************************/
+
+#ifndef	AUTOCONF
+
+  /*	Compiler definitions			*/
+  #define	UNIX	0		/* a random UNIX compiler */
+  #define	MSC	0		/* MicroSoft C compiler, versions 3 up */
+  #define	TURBO	1		/* Turbo C/MSDOS */
+
+  /*   Special keyboard definitions            */
+
+  #define       VT220	0		/* Use keypad escapes P.K.      */
+  #define       VT100   0		/* Handle VT100 style keypad.   */
+
+  /*	Terminal Output definitions		*/
+
+  #define       ANSI    0		/* ANSI escape sequences        */
+  #define	VMSVT	0		/* various VMS terminal entries */
+  #define       VT52    0		/* VT52 terminal (Zenith).      */
+  #define       TERMCAP 0		/* Use TERMCAP                  */
+  #define	IBMPC	1		/* IBM-PC CGA/MONO/EGA driver   */
+
+  #define	COLOR	1  /* color commands and windows                   */
+  #define	FILOCK	0  /* file locking under unix BSD 4.2              */
+
+  #define	XONXOFF	0  /* don't disable XON-XOFF flow control P.K.     */
+  #define	NATIONL	0  /* interprete [,],\,{,},| as characters P.K.    */
+
+#else
+
+  #define	UNIX	(V7 | BSD | USG)
+  #define	MSC	0
+  #define	TURBO	MSDOS
+
+  #define	VT220	(UNIX | VMS)
+  #define	VT100	0
+
+  #define	ANSI	0
+  #define	VMSVT	VMS
+  #define	VT52	0
+  #define	TERMCAP	UNIX
+  #define	IBMPC	MSDOS
+
+  #define	COLOR	MSDOS
+  #ifdef  SVR4
+    #define     FILOCK  1
+  #else
+    #define	FILOCK	BSD
+  #endif
+
+  #define	XONXOFF	(UNIX | VMS)
+  #define	NATIONL	(UNIX | VMS)
+
+#endif				/*autoconf */
+
+/****************************************************************************/
+
+
 
 #define	PKCODE	1      /* include my extensions P.K., define always    */
 #define	IBMCHR	MSDOS  /* use IBM PC character set P.K.                */
@@ -179,44 +181,41 @@
 /* System dependant library redefinitions, structures and includes. */
 
 #if TURBO
-#include <dos.h>
-#include <mem.h>
-#undef peek
-#undef poke
-#define       peek(a,b,c,d)   movedata(a,b,FP_SEG(c),FP_OFF(c),d)
-#define       poke(a,b,c,d)   movedata(FP_SEG(c),FP_OFF(c),a,b,d)
+  #include <dos.h>
+  #include <mem.h>
+  #undef peek
+  #undef poke
+  #define       peek(a,b,c,d)   movedata(a,b,FP_SEG(c),FP_OFF(c),d)
+  #define       poke(a,b,c,d)   movedata(FP_SEG(c),FP_OFF(c),a,b,d)
 #endif
 
 #if	VMS
-#define	atoi	xatoi
-#define	abs	xabs
-#define	getname	xgetname
+  #define	atoi	xatoi
+  #define	abs	xabs
+  #define	getname	xgetname
+  #define	unlink(a)	delete(a)
 #endif
 
 #if MSDOS & MSC
-#include	<dos.h>
-#include	<memory.h>
-#define	peek(a,b,c,d)	movedata(a,b,FP_SEG(c),FP_OFF(c),d)
-#define	poke(a,b,c,d)	movedata(FP_SEG(c),FP_OFF(c),a,b,d)
-#define	movmem(a, b, c)		memcpy(b, a, c)
-#endif
-
-#if	VMS
-#define	unlink(a)	delete(a)
+  #include	<dos.h>
+  #include	<memory.h>
+  #define	peek(a,b,c,d)	movedata(a,b,FP_SEG(c),FP_OFF(c),d)
+  #define	poke(a,b,c,d)	movedata(FP_SEG(c),FP_OFF(c),a,b,d)
+  #define	movmem(a, b, c)		memcpy(b, a, c)
 #endif
 
 /* Define some ability flags. */
 
 #if	IBMPC
-#define	MEMMAP	1
+  #define	MEMMAP	1
 #else
-#define	MEMMAP	0
+  #define	MEMMAP	0
 #endif
 
 #if	MSDOS | V7 | USG | BSD
-#define	ENVFUNC	1
+  #define	ENVFUNC	1
 #else
-#define	ENVFUNC	0
+  #define	ENVFUNC	0
 #endif
 
 /* Emacs global flag bit definitions (for gflags). */
@@ -242,12 +241,6 @@
 #define CTLX    0x0400		/* ^X flag, or'ed in            */
 #define	SPEC	0x0800		/* special key (function keys)  */
 
-#ifdef	FALSE
-#undef	FALSE
-#endif
-#ifdef	TRUE
-#undef	TRUE
-#endif
 
 #define FALSE   0		/* False, no, bad, etc.         */
 #define TRUE    1		/* True, yes, good, etc.        */
@@ -296,9 +289,9 @@
 #define	TAB	0x09		/* a tab character              */
 
 #if	V7 | USG | BSD
-#define	PATHCHR	':'
+  #define	PATHCHR	':'
 #else
-#define	PATHCHR	';'
+  #define	PATHCHR	';'
 #endif
 
 #define	INTWIDTH	sizeof(int) * 3
@@ -321,7 +314,7 @@
 
 #define	nextab(a)	(a & ~tabmask) + (tabmask+1)
 #ifdef	abs
-#undef	abs
+  #undef	abs
 #endif
 
 /* DIFCASE represents the integer difference between upper
@@ -331,63 +324,59 @@
 */
 
 #ifdef	islower
-#undef	islower
+  #undef	islower
 #endif
 
 #if	PKCODE
-#ifdef	isupper
+  #ifdef	isupper
 #undef	isupper
-#endif
+  #endif
 #endif
 
 #if	ASCII
 
-#define	DIFCASE		0x20
+  #define	DIFCASE		0x20
 
-#if	NATIONL
-#define LASTUL ']'
-#define LASTLL '}'
-#else
-#define LASTUL 'Z'
-#define LASTLL 'z'
-#endif
+  #if	NATIONL
+    #define LASTUL ']'
+    #define LASTLL '}'
+  #else
+    #define LASTUL 'Z'
+    #define LASTLL 'z'
+  #endif
 
-#if	IBMCHR
+  #if	IBMCHR
 
-#define isletter(c)	(('a' <= c && LASTLL >= c) || ('A' <= c && LASTUL >= c) || (128<=c && c<=167))
-#define islower(c)	(('a' <= c && LASTLL >= c))
-#define isupper(c)	(('A' <= c && LASTUL >= c))
+    #define isletter(c)	(('a' <= c && LASTLL >= c) || ('A' <= c && LASTUL >= c) || (128<=c && c<=167))
+    #define islower(c)	(('a' <= c && LASTLL >= c))
+    #define isupper(c)	(('A' <= c && LASTUL >= c))
 
-#else
+  #else
 
-#define isletter(c)	isxletter((0xFF & (c)))
-#define islower(c)	isxlower((0xFF & (c)))
-#define isupper(c)	isxupper((0xFF & (c)))
+    #define isletter(c)	isxletter((0xFF & (c)))
+    #define islower(c)	isxlower((0xFF & (c)))
+    #define isupper(c)	isxupper((0xFF & (c)))
 
-#define isxletter(c)	(('a' <= c && LASTLL >= c) || ('A' <= c && LASTUL >= c) || (192<=c && c<=255))
-#define isxlower(c)	(('a' <= c && LASTLL >= c) || (224 <= c && 252 >= c))
-#define isxupper(c)	(('A' <= c && LASTUL >= c) || (192 <= c && 220 >= c))
+    #define isxletter(c)	(('a' <= c && LASTLL >= c) || ('A' <= c && LASTUL >= c) || (192<=c && c<=255))
+    #define isxlower(c)	(('a' <= c && LASTLL >= c) || (224 <= c && 252 >= c))
+    #define isxupper(c)	(('A' <= c && LASTUL >= c) || (192 <= c && 220 >= c))
+  #endif
+#elif EBCDIC
 
-#endif
-
-#endif
-
-#if	EBCDIC
-
-#define	DIFCASE		0x40
-#define isletter(c)	(('a' <= c && 'i' >= c) || ('j' <= c && 'r' >= c) || ('s' <= c && 'z' >= c) || ('A' <= c && 'I' >= c) || ('J' <= c && 'R' >= c) || ('S' <= c && 'Z' >= c))
-#define islower(c)	(('a' <= c && 'i' >= c) || ('j' <= c && 'r' >= c) || ('s' <= c && 'z' >= c))
-#if	PKCODE
-#define isupper(c)	(('A' <= c && 'I' >= c) || ('J' <= c && 'R' >= c) || ('S' <= c && 'Z' >= c))
-#endif
+  #define	DIFCASE		0x40
+  #define isletter(c)	(('a' <= c && 'i' >= c) || ('j' <= c && 'r' >= c) || ('s' <= c && 'z' >= c) || ('A' <= c && 'I' >= c) || ('J' <= c && 'R' >= c) || ('S' <= c && 'Z' >= c))
+  #define islower(c)	(('a' <= c && 'i' >= c) || ('j' <= c && 'r' >= c) || ('s' <= c && 'z' >= c))
+  #if	PKCODE
+    #define isupper(c)	(('A' <= c && 'I' >= c) || ('J' <= c && 'R' >= c) || ('S' <= c && 'Z' >= c))
+  #endif
 
 #endif
 
 /*	Dynamic RAM tracking and reporting redefinitions	*/
 
 #if	RAMSIZE
-#define	malloc	allocate
-#define	free	release
+  #define	malloc	allocate
+  #define	free	release
 #endif
 
 /*	De-allocate memory always on exit (if the operating system or
@@ -395,7 +384,7 @@
 */
 
 #if	CLEAN
-#define	exit(a)	cexit(a)
+  #define	exit(a)	cexit(a)
 #endif
 
 /*
@@ -433,8 +422,8 @@ struct window {
 #define	WFCOLR	0x20		/* Needs a color change         */
 
 #if SCROLLCODE
-#define WFKILLS 0x40		/* something was deleted        */
-#define WFINS   0x80		/* something was inserted       */
+  #define WFKILLS 0x40		/* something was deleted        */
+  #define WFINS   0x80		/* something was inserted       */
 #endif
 
 
@@ -607,19 +596,19 @@ struct while_block {
  */
 #if	ISRCH
 
-#define	CMDBUFLEN	256	/* Length of our command buffer */
+  #define	CMDBUFLEN	256	/* Length of our command buffer */
 
-#define	IS_ABORT	0x07	/* Abort the isearch */
-#define IS_BACKSP	0x08	/* Delete previous char */
-#define	IS_TAB		0x09	/* Tab character (allowed search char) */
-#define IS_NEWLINE	0x0D	/* New line from keyboard (Carriage return) */
-#define	IS_QUOTE	0x11	/* Quote next character */
-#define IS_REVERSE	0x12	/* Search backward */
-#define	IS_FORWARD	0x13	/* Search forward */
-#define	IS_VMSQUOTE	0x16	/* VMS quote character */
-#define	IS_VMSFORW	0x18	/* Search forward for VMS */
-#define	IS_QUIT		0x1B	/* Exit the search */
-#define	IS_RUBOUT	0x7F	/* Delete previous character */
+  #define	IS_ABORT	0x07	/* Abort the isearch */
+  #define IS_BACKSP	0x08	/* Delete previous char */
+  #define	IS_TAB		0x09	/* Tab character (allowed search char) */
+  #define IS_NEWLINE	0x0D	/* New line from keyboard (Carriage return) */
+  #define	IS_QUOTE	0x11	/* Quote next character */
+  #define IS_REVERSE	0x12	/* Search backward */
+  #define	IS_FORWARD	0x13	/* Search forward */
+  #define	IS_VMSQUOTE	0x16	/* VMS quote character */
+  #define	IS_VMSFORW	0x18	/* Search forward for VMS */
+  #define	IS_QUIT		0x1B	/* Exit the search */
+  #define	IS_RUBOUT	0x7F	/* Delete previous character */
 
 /* IS_QUIT is no longer used, the variable metac is used instead */
 
@@ -630,36 +619,36 @@ struct while_block {
  * Defines for the metacharacters in the regular expression
  * search routines.
  */
-#define	MCNIL		0	/* Like the '\0' for strings. */
-#define	LITCHAR		1	/* Literal character, or string. */
-#define	ANY		2
-#define	CCL		3
-#define	NCCL		4
-#define	BOL		5
-#define	EOL		6
-#define	DITTO		7
-#define	CLOSURE		256	/* An or-able value. */
-#define	MASKCL		(CLOSURE - 1)
+  #define	MCNIL		0	/* Like the '\0' for strings. */
+  #define	LITCHAR		1	/* Literal character, or string. */
+  #define	ANY		2
+  #define	CCL		3
+  #define	NCCL		4
+  #define	BOL		5
+  #define	EOL		6
+  #define	DITTO		7
+  #define	CLOSURE		256	/* An or-able value. */
+  #define	MASKCL		(CLOSURE - 1)
 
-#define	MC_ANY		'.'	/* 'Any' character (except newline). */
-#define	MC_CCL		'['	/* Character class. */
-#define	MC_NCCL		'^'	/* Negate character class. */
-#define	MC_RCCL		'-'	/* Range in character class. */
-#define	MC_ECCL		']'	/* End of character class. */
-#define	MC_BOL		'^'	/* Beginning of line. */
-#define	MC_EOL		'$'	/* End of line. */
-#define	MC_CLOSURE	'*'	/* Closure - does not extend past newline. */
-#define	MC_DITTO	'&'	/* Use matched string in replacement. */
-#define	MC_ESC		'\\'	/* Escape - suppress meta-meaning. */
+  #define	MC_ANY		'.'	/* 'Any' character (except newline). */
+  #define	MC_CCL		'['	/* Character class. */
+  #define	MC_NCCL		'^'	/* Negate character class. */
+  #define	MC_RCCL		'-'	/* Range in character class. */
+  #define	MC_ECCL		']'	/* End of character class. */
+  #define	MC_BOL		'^'	/* Beginning of line. */
+  #define	MC_EOL		'$'	/* End of line. */
+  #define	MC_CLOSURE	'*'	/* Closure - does not extend past newline. */
+  #define	MC_DITTO	'&'	/* Use matched string in replacement. */
+  #define	MC_ESC		'\\'	/* Escape - suppress meta-meaning. */
 
-#define	BIT(n)		(1 << (n))	/* An integer with one bit set. */
-#define	CHCASE(c)	((c) ^ DIFCASE)	/* Toggle the case of a letter. */
+  #define	BIT(n)		(1 << (n))	/* An integer with one bit set. */
+  #define	CHCASE(c)	((c) ^ DIFCASE)	/* Toggle the case of a letter. */
 
 /* HICHAR - 1 is the largest character we will deal with.
  * HIBYTE represents the number of bytes in the bitmap.
  */
-#define	HICHAR		256
-#define	HIBYTE		HICHAR >> 3
+  #define	HICHAR		256
+  #define	HIBYTE		HICHAR >> 3
 
 /* Typedefs that define the meta-character structure for MAGIC mode searching
  * (struct magic), and the meta-character structure for MAGIC mode replacement
