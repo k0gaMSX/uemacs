@@ -50,16 +50,11 @@ int ffclose(void)
 	}
 	eofflag = FALSE;
 
-#if     USG
-	if (fclose(ffp) != FALSE) {
+	if (fclose(ffp)) {
 		mlwrite("Error closing file");
 		return FIOERR;
 	}
 	return FIOSUC;
-#else
-	fclose(ffp);
-	return FIOSUC;
-#endif
 }
 
 /*

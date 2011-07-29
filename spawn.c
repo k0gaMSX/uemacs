@@ -13,13 +13,13 @@
 #include "efunc.h"
 
 
-#if     USG
+
 #include        <signal.h>
 #ifdef SIGWINCH
 extern int chg_width, chg_height;
 extern void sizesignal(int);
 #endif
-#endif
+
 
 
 /*
@@ -30,15 +30,12 @@ extern void sizesignal(int);
  */
 int spawncli(int f, int n)
 {
-#if     USG
 	char *cp;
-#endif
 
 	/* don't allow this command if restricted */
 	if (restflag)
 		return resterr();
 
-#if     USG
 	movecursor(term.t_nrow, 0);	/* Seek to last line.   */
 	TTflush();
 	TTclose();		/* stty to old settings */
@@ -62,7 +59,6 @@ int spawncli(int f, int n)
 	term.t_nrow = term.t_ncol = 0;
 #endif
 	return TRUE;
-#endif
 }
 
 #if	__hpux | SVR4
@@ -102,7 +98,6 @@ int spawn(int f, int n)
 	if (restflag)
 		return resterr();
 
-#if     USG
 	if ((s = mlreply("!", line, NLINE)) != TRUE)
 		return s;
 	TTflush();
@@ -121,7 +116,6 @@ int spawn(int f, int n)
 	TTkopen();
 	sgarbf = TRUE;
 	return TRUE;
-#endif
 }
 
 /*
@@ -139,7 +133,6 @@ int execprg(int f, int n)
 	if (restflag)
 		return resterr();
 
-#if     USG
 	if ((s = mlreply("!", line, NLINE)) != TRUE)
 		return s;
 	TTputc('\n');		/* Already have '\r'    */
@@ -153,7 +146,6 @@ int execprg(int f, int n)
 	while ((s = tgetc()) != '\r' && s != ' ');
 	sgarbf = TRUE;
 	return TRUE;
-#endif
 }
 
 /*
@@ -202,7 +194,6 @@ int pipecmd(int f, int n)
 			return FALSE;
 	}
 
-#if     USG
 	TTflush();
 	TTclose();		/* stty to old modes    */
 	strcat(line, ">");
@@ -212,7 +203,6 @@ int pipecmd(int f, int n)
 	TTflush();
 	sgarbf = TRUE;
 	s = TRUE;
-#endif
 
 	if (s != TRUE)
 		return s;
@@ -276,7 +266,6 @@ int filter_buffer(int f, int n)
 		return FALSE;
 	}
 
-#if     USG
 	TTputc('\n');		/* Already have '\r'    */
 	TTflush();
 	TTclose();		/* stty to old modes    */
@@ -286,7 +275,6 @@ int filter_buffer(int f, int n)
 	TTflush();
 	sgarbf = TRUE;
 	s = TRUE;
-#endif
 
 	/* on failure, escape gracefully */
 	if (s != TRUE || (readin(filnam2, FALSE) == FALSE)) {

@@ -23,9 +23,7 @@
 
 #if TERMCAP
 
-#if UNIX
 #include <signal.h>
-#endif
 
 #define	MARGIN	8
 #define	SCRSIZ	64

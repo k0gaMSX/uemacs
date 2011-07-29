@@ -14,7 +14,7 @@
 #include "efunc.h"
 #include "wrapper.h"
 
-#if	PKCODE && UNIX
+#if	PKCODE
 #define	COMPLC	1
 #else
 #define COMPLC	0
@@ -430,10 +430,8 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 	int quotef;	/* are we quoting the next char? */
 #if	COMPLC
 	int ffile, ocpos, nskip = 0, didtry = 0;
-#if	UNIX
 	static char tmp[] = "/tmp/meXXXXXX";
 	FILE *tmpf = NULL;
-#endif
 	ffile = (strcmp(prompt, "Find file: ") == 0
 		 || strcmp(prompt, "View file: ") == 0
 		 || strcmp(prompt, "Insert file: ") == 0
@@ -550,7 +548,6 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 			TTflush();
 			if (nskip < 0) {
 				buf[ocpos] = 0;
-#if	UNIX
 				if (tmpf != NULL)
 					fclose(tmpf);
 				strcpy(tmp, "/tmp/meXXXXXX");
@@ -564,34 +561,30 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 				strcat(ffbuf, " 2>&1");
 				system(ffbuf);
 				tmpf = fopen(tmp, "r");
-#endif
-
 				nskip = 0;
 			}
-#if	UNIX
+
 			c = ' ';
 			for (n = nskip; n > 0; n--)
 				while ((c = getc(tmpf)) != EOF
 				       && c != ' ');
-#endif
+
 			nskip++;
 
 			if (c != ' ') {
 				TTbeep();
 				nskip = 0;
 			}
-#if	UNIX
+
 			while ((c = getc(tmpf)) != EOF && c != '\n'
 			       && c != ' ' && c != '*')
-#endif
+
 			{
 				if (cpos < nbuf - 1)
 					buf[cpos++] = c;
 			}
-#if	UNIX
 			if (c == '*')
 				TTbeep();
-#endif
 
 			for (n = 0; n < cpos; n++) {
 				c = buf[n];
@@ -611,10 +604,8 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 				++ttcol;
 			}
 			TTflush();
-#if	UNIX
 			rewind(tmpf);
 			unlink(tmp);
-#endif
 #endif
 
 		} else if ((c == quotec || c == 0x16) && quotef == FALSE) {

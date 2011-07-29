@@ -66,12 +66,10 @@
 #define GOOD    0
 #endif
 
-#if UNIX
 #include <signal.h>
 static void emergencyexit(int);
 #ifdef SIGWINCH
 extern void sizesignal(int);
-#endif
 #endif
 
 void usage(int status)
@@ -111,10 +109,8 @@ int main(int argc, char **argv)
 #endif
 	int newc;
 
-#if	UNIX
 #ifdef SIGWINCH
 	signal(SIGWINCH, sizesignal);
-#endif
 #endif
 	if (argc == 2) {
 		if (strcmp(argv[1], "--help") == 0) {
@@ -235,10 +231,8 @@ int main(int argc, char **argv)
 		}
 	}
 
-#if	UNIX
 	signal(SIGHUP, emergencyexit);
 	signal(SIGTERM, emergencyexit);
-#endif
 
 	/* if we are C error parsing... run it! */
 	if (errflag) {
@@ -473,11 +467,7 @@ int execute(int c, int f, int n)
 
 #if	PKCODE
 	if ((c >= 0x20 && c <= 0x7E)	/* Self inserting.      */
-#if	USG	/* 8BIT P.K. */
 	    || (c >= 0xA0 && c <= 0xFE)) {
-#else
-	    ) {
-#endif
 #else
 	if ((c >= 0x20 && c <= 0xFF)) {	/* Self inserting.      */
 #endif
@@ -563,13 +553,11 @@ int quickexit(int f, int n)
 	return TRUE;
 }
 
-#if	UNIX
 static void emergencyexit(int signr)
 {
 	quickexit(FALSE, 0);
 	quit(TRUE, 0);
 }
-#endif
 
 /*
  * Quit command. If an argument, always quit. Otherwise confirm if a buffer

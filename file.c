@@ -334,10 +334,9 @@ void makename(char *bname, char *fname)
 	while (*cp1 != 0)
 		++cp1;
 
-#if     USG
 	while (cp1 != &fname[0] && cp1[-1] != '/')
 		--cp1;
-#endif
+
 	cp2 = &bname[0];
 	while (cp2 != &bname[NBUFN - 1] && *cp1 != 0 && *cp1 != ';')
 		*cp2++ = *cp1++;

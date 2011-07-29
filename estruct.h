@@ -49,23 +49,20 @@
 /* Machine/OS definitions. */
 #define SYSV    1
 #define SVR4    1
-#define USG     1
 
-#define	UNIX	USG
-
-#define	VT220	UNIX
+#define	VT220	1
 #define	VT100	0
 
 #define	ANSI	0
 #define	VT52	0
-#define	TERMCAP	UNIX
+#define	TERMCAP	1
 
 #ifdef  SVR4
   #define     FILOCK  1
 #endif
 
-#define	XONXOFF	UNIX
-#define	NATIONL	UNIX
+#define	XONXOFF	1
+#define	NATIONL	1
 
 #if !VT220 && !VT100 && !ANSI && !TERMCAP
   #error "Terminal not defined"
@@ -150,11 +147,7 @@
 #define	BELL	0x07		/* a bell character             */
 #define	TAB	0x09		/* a tab character              */
 
-#if	USG
-  #define	PATHCHR	':'
-#else
-  #define	PATHCHR	';'
-#endif
+#define	PATHCHR	':'
 
 #define	INTWIDTH	sizeof(int) * 3
 

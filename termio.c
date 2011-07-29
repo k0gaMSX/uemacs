@@ -15,7 +15,6 @@
 #include	"estruct.h"
 #include        "edef.h"
 
-#if	USG			/* System V */
 #include	<signal.h>
 #include	<termio.h>
 #include	<fcntl.h>
@@ -27,7 +26,6 @@ struct termio otermio;		/* original terminal characteristics */
 struct termio ntermio;		/* charactoristics to use inside */
 #if	XONXOFF
 #define XXMASK	0016000
-#endif
 #endif
 
 
@@ -44,7 +42,6 @@ char tobuf[TBUFSIZ];		/* terminal output buffer */
  */
 void ttopen(void)
 {
-#if	USG
 	ioctl(0, TCGETA, &otermio);	/* save old settings */
 	ntermio.c_iflag = 0;	/* setup new settings */
 #if	XONXOFF
@@ -63,8 +60,6 @@ void ttopen(void)
 #endif
 	kbdflgs = fcntl(0, F_GETFL, 0);
 	kbdpoll = FALSE;
-#endif
-
 
 #if	__hpux | SVR4
 	/* provide a smaller terminal output buffer so that
@@ -89,14 +84,12 @@ void ttopen(void)
 void ttclose(void)
 {
 
-#if	USG
 #if	PKCODE
 	ioctl(0, TCSETAW, &otermio);	/* restore terminal settings */
 #else
 	ioctl(0, TCSETA, &otermio);	/* restore terminal settings */
 #endif
 	fcntl(0, F_SETFL, kbdflgs);
-#endif
 }
 
 /*
@@ -107,9 +100,7 @@ void ttclose(void)
  */
 void ttputc(c)
 {
-#if     USG
 	fputc(c, stdout);
-#endif
 }
 
 /*
@@ -160,7 +151,6 @@ ttgetc()
 
 typahead()
 {
-#if	USG
 	if (!kbdqp) {
 		if (!kbdpoll && fcntl(0, F_SETFL, kbdflgs | O_NDELAY) < 0)
 			return FALSE;
@@ -170,8 +160,6 @@ typahead()
 		kbdqp = (1 == read(0, &kbdq, 1));
 	}
 	return kbdqp;
-#endif
-
 }
 #endif
 

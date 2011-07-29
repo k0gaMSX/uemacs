@@ -202,18 +202,6 @@ void ansiparm(int n)
 
 void ansiopen(void)
 {
-#if     USG
-	char *cp;
-
-	if ((cp = getenv("TERM")) == NULL) {
-		puts("Shell variable TERM not defined!");
-		exit(1);
-	}
-	if (strcmp(cp, "vt100") != 0) {
-		puts("Terminal type not 'vt100'!");
-		exit(1);
-	}
-#endif
 	strcpy(sres, "NORMAL");
 	revexist = TRUE;
 	ttopen();

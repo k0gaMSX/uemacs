@@ -10,13 +10,11 @@
 
 /*	possible names and paths of help files under different OSs	*/
 static char *pathname[] = {
-#if	USG
 	".emacsrc", "emacs.hlp",
   #if	PKCODE
 	    "/usr/global/lib/", "/usr/local/bin/", "/usr/local/lib/",
   #endif
         "/usr/local/", "/usr/lib/",
-#endif
 
         ""};
 

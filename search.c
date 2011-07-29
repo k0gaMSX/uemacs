@@ -1193,9 +1193,7 @@ static int mcstr(void)
 	if (status) {
 		rtpcm = &tapcm[0];
 		while (--mj >= 0) {
-#if	USG
 			*rtpcm++ = *--mcptr;
-#endif
 		}
 		rtpcm->mc_type = MCNIL;
 	} else {

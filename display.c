@@ -43,9 +43,8 @@ static struct video **pscreen;		/* Physical screen. */
 #endif
 
 static int displaying = TRUE;
-#if UNIX
 #include <signal.h>
-#endif
+
 #ifdef SIGWINCH
 #include <sys/ioctl.h>
 /* for window size changes */
