@@ -11,7 +11,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include <unistd.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -141,9 +140,6 @@ void vttidy(void)
 	TTflush();
 	TTclose();
 	TTkclose();
-#ifdef PKCODE
-	write(1, "\r", 1);
-#endif
 }
 
 /*
