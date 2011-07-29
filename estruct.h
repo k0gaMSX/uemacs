@@ -47,76 +47,30 @@
 #endif
 
 /* Machine/OS definitions. */
+#define SYSV    1
+#define SVR4    1
+#define	V7      0
+#define USG     1
 
-#if defined(AUTOCONF) || defined(SYSV)
+#define	UNIX	(V7 | USG)
 
-/* Make an intelligent guess about the target system. */
+#define	VT220	UNIX
+#define	VT100	0
 
-  #if defined(SVR4) || defined(__linux__)	/* ex. SunOS 5.3 */
-    #define SVR4 1
-    #define SYSV 1
-  #endif
+#define	ANSI	0
+#define	VT52	0
+#define	TERMCAP	UNIX
 
-  #if defined(SYSV) || defined(u3b2) || defined(_AIX) || (defined(i386) && defined(unix)) || defined(__hpux)
-    #define	USG 1 /* System V UNIX */
-  #else
-    #define	USG 0
-  #endif
+#ifdef  SVR4
+  #define     FILOCK  1
+#endif
 
-  #define	V7 0 /* No more. */
+#define	XONXOFF	UNIX
+#define	NATIONL	UNIX
 
-#else
-
-  #define V7      0		/* V7 UNIX or Coherent or BSD4.2 */
-  #define USG	  0		/* UNIX system V                */
-
-#endif				/*autoconf */
-
-
-
-/****************************************************************************/
-
-#ifndef	AUTOCONF
-
-  /*	Compiler definitions			*/
-  #define	UNIX	0		/* a random UNIX compiler */
-
-  /*   Special keyboard definitions            */
-
-  #define       VT220	0		/* Use keypad escapes P.K.      */
-  #define       VT100   0		/* Handle VT100 style keypad.   */
-
-  /*	Terminal Output definitions		*/
-
-  #define       ANSI    0		/* ANSI escape sequences        */
-  #define       VT52    0		/* VT52 terminal (Zenith).      */
-  #define       TERMCAP 0		/* Use TERMCAP                  */
-
-  #define	COLOR	1  /* color commands and windows                   */
-  #define	FILOCK	0  /* file locking under unix BSD 4.2              */
-
-  #define	XONXOFF	0  /* don't disable XON-XOFF flow control P.K.     */
-  #define	NATIONL	0  /* interprete [,],\,{,},| as characters P.K.    */
-
-#else
-
-  #define	UNIX	(V7 | USG)
-
-  #define	VT220	UNIX
-  #define	VT100	0
-
-  #define	ANSI	0
-  #define	VT52	0
-  #define	TERMCAP	UNIX
-
-  #ifdef  SVR4
-    #define     FILOCK  1
-  #endif
-
-  #define	XONXOFF	UNIX
-  #define	NATIONL	UNIX
-
-#endif				/*autoconf */
+#if !VT220 && !VT100 && !ANSI && !TERMCAP
+  #error "Terminal not defined"
+#endif
 
 /****************************************************************************/
 
@@ -406,8 +360,8 @@ struct terminal {
 	void (*t_rev)(int);	/* set reverse video state      */
 	int (*t_rez)(char *);	/* change screen resolution     */
 #if	COLOR
-	int (*t_setfor) ();	/* set forground color          */
-	int (*t_setback) ();	/* set background color         */
+	int (*t_setfor) (int);	/* set forground color          */
+	int (*t_setback) (int);	/* set background color         */
 #endif
 #if     SCROLLCODE
 	void (*t_scroll)(int, int,int);	/* scroll a region of the screen */

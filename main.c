@@ -563,11 +563,13 @@ int quickexit(int f, int n)
 	return TRUE;
 }
 
+#if	UNIX
 static void emergencyexit(int signr)
 {
 	quickexit(FALSE, 0);
 	quit(TRUE, 0);
 }
+#endif
 
 /*
  * Quit command. If an argument, always quit. Otherwise confirm if a buffer

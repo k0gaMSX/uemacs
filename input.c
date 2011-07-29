@@ -330,9 +330,11 @@ int getcmd(void)
 	/* process META prefix */
 	if (c == (CONTROL | '[')) {
 		c = get1key();
+
+handle_CSI:
 #if VT220
 		if (c == '[' || c == 'O') {	/* CSI P.K. */
-handle_CSI:
+
 			c = get1key();
 			if (c >= 'A' && c <= 'D')
 				return SPEC | c | cmask;
@@ -365,8 +367,6 @@ handle_CSI:
 			else
 				return SPEC | c | cmask;
 		}
-#endif
-#if VT220
 		if (c == (CONTROL | '[')) {
 			cmask = META;
 			goto proc_metac;

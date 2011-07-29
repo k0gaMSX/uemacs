@@ -143,12 +143,8 @@ char *gtfun(char *fname)
 	case UFSINDEX:
 		return itoa(sindex(arg1, arg2));
 	case UFENV:
-#if	ENVFUNC
 		tsp = getenv(arg1);
 		return tsp == NULL ? "" : tsp;
-#else
-		return "";
-#endif
 	case UFBIND:
 		return transbind(arg1);
 	case UFEXIST:
@@ -211,7 +207,6 @@ char *gtenv(char *vname)
 
 	/* return errorm on a bad reference */
 	if (vnum == ARRAY_SIZE(envars))
-#if	ENVFUNC
 	{
 		char *ename = getenv(vname);
 
@@ -220,9 +215,6 @@ char *gtenv(char *vname)
 		else
 			return errorm;
 	}
-#else
-		return errorm;
-#endif
 
 	/* otherwise, fetch the appropriate value */
 	switch (vnum) {

@@ -137,7 +137,9 @@ extern void mlwrite(const char *fmt, ...);
 extern void mlforce(char *s);
 extern void mlputs(char *s);
 extern void getscreensize(int *widthp, int *heightp);
+#ifdef SIGWINCH
 extern void sizesignal(int signr);
+#endif
 
 /* region.c */
 extern int killregion(int f, int n);
