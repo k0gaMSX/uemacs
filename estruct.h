@@ -127,15 +127,6 @@
 
 /* System dependant library redefinitions, structures and includes. */
 
-
-/* Define some ability flags. */
-
-#if	V7 | USG
-  #define	ENVFUNC	1
-#else
-  #define	ENVFUNC	0
-#endif
-
 /* Emacs global flag bit definitions (for gflags). */
 
 #define	GFREAD	1
