@@ -202,7 +202,7 @@ void ansiparm(int n)
 
 void ansiopen(void)
 {
-#if     V7 | USG
+#if     USG
 	char *cp;
 
 	if ((cp = getenv("TERM")) == NULL) {

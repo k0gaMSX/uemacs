@@ -30,23 +30,6 @@ struct termio ntermio;		/* charactoristics to use inside */
 #endif
 #endif
 
-#if	V7
-#include        <sgtty.h>	/* for stty/gtty functions */
-#include	<signal.h>
-struct sgttyb ostate;		/* saved tty state */
-struct sgttyb nstate;		/* values for editor mode */
-struct tchars otchars;		/* Saved terminal special character set */
-#if	XONXOFF
-struct tchars ntchars = { 0xff, 0xff, 0x11, 0x13, 0xff, 0xff };
-
-				/* A lot of nothing and XON/XOFF */
-#else
-struct tchars ntchars = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-
-				/* A lot of nothing */
-#endif
-
-#endif
 
 #if	__hpux | SVR4
 extern int rtfrmshell();	/* return from suspended shell */
@@ -82,19 +65,6 @@ void ttopen(void)
 	kbdpoll = FALSE;
 #endif
 
-#if     V7
-	gtty(0, &ostate);	/* save old state */
-	gtty(0, &nstate);	/* get base of new state */
-#if	XONXOFF
-	nstate.sg_flags |= (CBREAK | TANDEM);
-#else
-	nstate.sg_flags |= RAW;
-#endif
-	nstate.sg_flags &= ~(ECHO | CRMOD);	/* no echo for now... */
-	stty(0, &nstate);	/* set mode */
-	ioctl(0, TIOCGETC, &otchars);	/* Save old characters */
-	ioctl(0, TIOCSETC, &ntchars);	/* Place new character into K */
-#endif
 
 #if	__hpux | SVR4
 	/* provide a smaller terminal output buffer so that
@@ -127,11 +97,6 @@ void ttclose(void)
 #endif
 	fcntl(0, F_SETFL, kbdflgs);
 #endif
-
-#if     V7
-	stty(0, &ostate);
-	ioctl(0, TIOCSETC, &otchars);	/* Place old character into K */
-#endif
 }
 
 /*
@@ -142,7 +107,7 @@ void ttclose(void)
  */
 void ttputc(c)
 {
-#if     V7 | USG
+#if     USG
 	fputc(c, stdout);
 #endif
 }
@@ -153,7 +118,6 @@ void ttputc(c)
  */
 int ttflush(void)
 {
-#if     V7 | USG
 /*
  * Add some terminal output success checking, sometimes an orphaned
  * process may be left looping on SunOS 4.1.
@@ -163,17 +127,13 @@ int ttflush(void)
  *
  * jph, 8-Oct-1993
  */
-
-#include <errno.h>
-
 	int status;
 
 	status = fflush(stdout);
 
 	if (status != 0 && errno != EAGAIN) {
-		exit(errno);
+		exit(EXIT_FAILURE);
 	}
-#endif
 }
 
 /*
@@ -182,11 +142,6 @@ int ttflush(void)
  */
 ttgetc()
 {
-#if     V7
-	return 255 & fgetc(stdin);	/* 8BIT P.K. */
-#endif
-
-#if	USG
 	if (kbdqp)
 		kbdqp = FALSE;
 	else {
@@ -196,7 +151,6 @@ ttgetc()
 		while (read(0, &kbdq, 1) != 1);
 	}
 	return kbdq & 255;
-#endif
 }
 
 #if	TYPEAH

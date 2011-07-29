@@ -135,19 +135,6 @@ vt52beep()
 
 vt52open()
 {
-#if     V7
-	char *cp;
-	char *getenv();
-
-	if ((cp = getenv("TERM")) == NULL) {
-		puts("Shell variable TERM not defined!");
-		exit(1);
-	}
-	if (strcmp(cp, "vt52") != 0 && strcmp(cp, "z19") != 0) {
-		puts("Terminal type not 'vt52'or 'z19' !");
-		exit(1);
-	}
-#endif
 	ttopen();
 }
 

@@ -49,10 +49,9 @@
 /* Machine/OS definitions. */
 #define SYSV    1
 #define SVR4    1
-#define	V7      0
 #define USG     1
 
-#define	UNIX	(V7 | USG)
+#define	UNIX	USG
 
 #define	VT220	UNIX
 #define	VT100	0
@@ -151,7 +150,7 @@
 #define	BELL	0x07		/* a bell character             */
 #define	TAB	0x09		/* a tab character              */
 
-#if	V7 | USG
+#if	USG
   #define	PATHCHR	':'
 #else
   #define	PATHCHR	';'

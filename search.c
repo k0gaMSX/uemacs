@@ -1193,7 +1193,7 @@ static int mcstr(void)
 	if (status) {
 		rtpcm = &tapcm[0];
 		while (--mj >= 0) {
-#if	USG | V7
+#if	USG
 			*rtpcm++ = *--mcptr;
 #endif
 		}
