@@ -29,11 +29,9 @@ struct termio ntermio;		/* charactoristics to use inside */
 #endif
 
 
-#if	__hpux | SVR4
 extern int rtfrmshell();	/* return from suspended shell */
 #define TBUFSIZ 128
 char tobuf[TBUFSIZ];		/* terminal output buffer */
-#endif
 
 /*
  * This function is called once to set up the terminal device streams.
@@ -61,14 +59,12 @@ void ttopen(void)
 	kbdflgs = fcntl(0, F_GETFL, 0);
 	kbdpoll = FALSE;
 
-#if	__hpux | SVR4
 	/* provide a smaller terminal output buffer so that
 	   the type ahead detection works better (more often) */
 	setvbuf(stdout, &tobuf[0], _IOFBF, TBUFSIZ);
 	signal(SIGTSTP, SIG_DFL);	/* set signals so that we can */
 	signal(SIGCONT, rtfrmshell);	/* suspend & restart emacs */
 	TTflush();
-#endif				/* __hpux */
 
 	/* on all screens we are not sure of the initial position
 	   of the cursor                                        */

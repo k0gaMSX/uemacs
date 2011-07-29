@@ -61,7 +61,6 @@ int spawncli(int f, int n)
 	return TRUE;
 }
 
-#if	__hpux | SVR4
 
 int bktoshell(int f, int n)
 {				/* suspend MicroEMACS and wait to wake up */
@@ -82,7 +81,6 @@ void rtfrmshell(void)
 	curwp->w_flag = WFHARD;
 	sgarbf = TRUE;
 }
-#endif
 
 /*
  * Run a one-liner in a subjob. When the command returns, wait for a single

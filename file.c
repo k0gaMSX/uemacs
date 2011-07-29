@@ -222,7 +222,6 @@ int readin(char *fname, int lockfl)
 	int lflag;		/* any lines longer than allowed? */
 	char mesg[NSTRING];
 
-#if	SVR4
 	if (lockfl && lockchk(fname) == ABORT)
 #if PKCODE
 	{
@@ -234,7 +233,7 @@ int readin(char *fname, int lockfl)
 #else
 		return ABORT;
 #endif
-#endif
+
 #if	CRYPT
 	s = resetkey();
 	if (s != TRUE)

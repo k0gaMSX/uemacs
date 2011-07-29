@@ -572,7 +572,6 @@ int quit(int f, int n)
 	    /* User says it's OK.   */
 	    || (s =
 		mlyesno("Modified buffers exist. Leave anyway")) == TRUE) {
-#if	SVR4
 		if (lockrel() != TRUE) {
 			TTputc('\n');
 			TTputc('\r');
@@ -580,7 +579,7 @@ int quit(int f, int n)
 			TTkclose();
 			exit(1);
 		}
-#endif
+
 		vttidy();
 		if (f)
 			exit(n);

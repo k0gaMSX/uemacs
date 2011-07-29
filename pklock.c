@@ -7,31 +7,16 @@
 #include "edef.h"
 #include "efunc.h"
 
-#if SVR4
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
-#ifdef SVR4
 #include <string.h>
-#else
-#include <strings.h>
-#endif
 #include <errno.h>
 
 #define MAXLOCK 512
 #define MAXNAME 128
-
-#if defined(SVR4) && ! defined(__linux__)
-#include <sys/systeminfo.h>
-
-int gethostname(char *name, int namelen)
-{
-	return sysinfo(SI_HOSTNAME, name, namelen);
-}
-#endif
-
 
 
 /**********************
@@ -118,4 +103,3 @@ char *undolock(char *fname)
 	}
 	return NULL;
 }
-#endif

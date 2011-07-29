@@ -154,10 +154,8 @@ struct key_tab keytab[NBINDS] = {
 	,
 	{CTLX | 'C', spawncli}
 	,
-#if	__hpux | SVR4
 	{CTLX | 'D', bktoshell}
 	,
-#endif
 	{CTLX | 'E', ctlxe}
 	,
 	{CTLX | 'F', setfillcol}

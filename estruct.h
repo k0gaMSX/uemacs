@@ -47,9 +47,6 @@
 #endif
 
 /* Machine/OS definitions. */
-#define SYSV    1
-#define SVR4    1
-
 #define	VT220	1
 #define	VT100	0
 
@@ -57,9 +54,7 @@
 #define	VT52	0
 #define	TERMCAP	1
 
-#ifdef  SVR4
-  #define     FILOCK  1
-#endif
+#define     FILOCK  1
 
 #define	XONXOFF	1
 #define	NATIONL	1

@@ -10,7 +10,7 @@
 #include "edef.h"
 #include "efunc.h"
 
-#if	SVR4
+#if	FILOCK
 #include <sys/errno.h>
 
 static char *lname[NLOCKS];		/* names of all locked files */
