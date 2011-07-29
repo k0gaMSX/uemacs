@@ -176,7 +176,7 @@ int isearch(int f, int n)
 	 */
 
 	c = ectoc(expc = get_char());	/* Get the first character    */
-	if ((c == IS_FORWARD) || (c == IS_REVERSE) || (c == IS_VMSFORW)) {	/* Reuse old search string?   */
+	if ((c == IS_FORWARD) || (c == IS_REVERSE)) { /* Reuse old search string? */
 		for (cpos = 0; pat[cpos] != 0; cpos++)	/* Yup, find the length           */
 			col = echo_char(pat[cpos], col);	/*  and re-echo the string    */
 		if (c == IS_REVERSE) {	/* forward search?            */
@@ -203,7 +203,6 @@ int isearch(int f, int n)
 
 		case IS_REVERSE:	/* If backward search         */
 		case IS_FORWARD:	/* If forward search          */
-		case IS_VMSFORW:	/*  of either flavor          */
 			if (c == IS_REVERSE)	/* If reverse search              */
 				n = -1;	/* Set the reverse direction  */
 			else	/* Otherwise,                     */
@@ -217,7 +216,6 @@ int isearch(int f, int n)
 			break;	/* Make sure we use it        */
 
 		case IS_QUOTE:	/* Quote character            */
-		case IS_VMSQUOTE:	/*  of either variety         */
 			c = ectoc(expc = get_char());	/* Get the next char          */
 
 		case IS_TAB:	/* Generically allowed        */
@@ -267,7 +265,7 @@ int isearch(int f, int n)
 /*
  * Trivial routine to insure that the next character in the search string is
  * still true to whatever we're pointing to in the buffer.  This routine will
- * not attempt to move the "point" if the match fails, although it will 
+ * not attempt to move the "point" if the match fails, although it will
  * implicitly move the "point" if we're forward searching, and find a match,
  * since that's the way forward isearch works.
  *
@@ -446,7 +444,7 @@ static int echo_char(int c, int col)
 
 /*
  * Routine to get the next character from the input stream.  If we're reading
- * from the real terminal, force a screen update before we get the char. 
+ * from the real terminal, force a screen update before we get the char.
  * Otherwise, we must be re-executing the command string, so just return the
  * next character.
  */

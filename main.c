@@ -62,11 +62,6 @@
 #include "ebind.h"   /* Default key bindings. */
 #include "version.h"
 
-#if VMS
-#include <ssdef.h>
-#define GOOD    (SS$_NORMAL)
-#endif
-
 #ifndef GOOD
 #define GOOD    0
 #endif
@@ -115,10 +110,6 @@ int main(int argc, char **argv)
 	char ekey[NPAT];	/* startup encryption key */
 #endif
 	int newc;
-
-#if	PKCODE & VMS
-	(void) umask(-1); /* Use old protection (this is at wrong place). */
-#endif
 
 #if	PKCODE & BSD
 	sleep(1); /* Time for window manager. */
@@ -486,7 +477,7 @@ int execute(int c, int f, int n)
 
 #if	PKCODE
 	if ((c >= 0x20 && c <= 0x7E)	/* Self inserting.      */
-#if	VMS || BSD || USG	/* 8BIT P.K. */
+#if	BSD || USG	/* 8BIT P.K. */
 	    || (c >= 0xA0 && c <= 0xFE)) {
 #else
 	    ) {

@@ -20,13 +20,4 @@ static char *pathname[] =
 "/usr/local/", "/usr/lib/", ""};
 #endif
 
-#if	VMS
-{
-	"emacs.rc", "emacs.hlp", "",
-#if	PKCODE
-	    "sys$login:", "emacs_dir:",
-#endif
-"sys$sysdevice:[vmstools]"};
-#endif
-
 #endif  /* EPATH_H_ */
