@@ -30,23 +30,11 @@ OBJ=ansi.o basic.o bind.o buffer.o crypt.o display.o eval.o exec.o \
 
 HDR=ebind.h edef.h efunc.h epath.h estruct.h evar.h util.h version.h
 
-# DO NOT ADD OR MODIFY ANY LINES ABOVE THIS -- make source creates them
-
 CC=gcc
 WARNINGS=-Wall -Wstrict-prototypes
 CFLAGS=-O2 $(WARNINGS)
-#CC=c89 +O3			# HP
-#CFLAGS= -D_HPUX_SOURCE -DSYSV
-#CFLAGS=-O4 -DSVR4		# Sun
-#CFLAGS=-O -qchars=signed	# RS/6000
-ifeq ($(uname_S),Linux)
- DEFINES=-DPOSIX -D_BSD_SOURCE -D_SVID_SOURCE -D_XOPEN_SOURCE=600
-endif
-#DEFINES=-DAUTOCONF
-#LIBS=-ltermcap			# BSD
-LIBS=-lcurses			# SYSV
-#LIBS=-ltermlib
-#LIBS=-L/usr/lib/termcap -ltermcap
+DEFINES=-DPOSIX -D_BSD_SOURCE -D_SVID_SOURCE -D_XOPEN_SOURCE=600
+LIBS=-lcurses
 LFLAGS=-hbx
 BINDIR=/usr/bin
 LIBDIR=/usr/lib
