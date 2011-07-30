@@ -51,11 +51,7 @@ void ttopen(void)
 	ntermio.c_line = otermio.c_line;
 	ntermio.c_cc[VMIN] = 1;
 	ntermio.c_cc[VTIME] = 0;
-#if	PKCODE
 	ioctl(0, TCSETAW, &ntermio);	/* and activate them */
-#else
-	ioctl(0, TCSETA, &ntermio);	/* and activate them */
-#endif
 	kbdflgs = fcntl(0, F_GETFL, 0);
 	kbdpoll = FALSE;
 
@@ -80,11 +76,7 @@ void ttopen(void)
 void ttclose(void)
 {
 
-#if	PKCODE
 	ioctl(0, TCSETAW, &otermio);	/* restore terminal settings */
-#else
-	ioctl(0, TCSETA, &otermio);	/* restore terminal settings */
-#endif
 	fcntl(0, F_SETFL, kbdflgs);
 }
 
@@ -150,9 +142,7 @@ typahead()
 	if (!kbdqp) {
 		if (!kbdpoll && fcntl(0, F_SETFL, kbdflgs | O_NDELAY) < 0)
 			return FALSE;
-#if	PKCODE
 		kbdpoll = 1;
-#endif
 		kbdqp = (1 == read(0, &kbdq, 1));
 	}
 	return kbdqp;

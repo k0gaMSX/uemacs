@@ -108,7 +108,6 @@ int ffgetline(void)
 			return FIOMEM;
 
 	/* read the line in */
-#if	PKCODE
 	if (!nullflag) {
 		if (fgets(fline, NSTRING, ffp) == (char *) NULL) {	/* EOF ? */
 			i = 0;
@@ -126,13 +125,8 @@ int ffgetline(void)
 		c = fgetc(ffp);
 	}
 	while (c != EOF && c != '\n') {
-#else
-	i = 0;
-	while ((c = fgetc(ffp)) != EOF && c != '\n') {
-#endif
-#if	PKCODE
 		if (c) {
-#endif
+
 			fline[i++] = c;
 			/* if it's longer, get more room */
 			if (i >= flen) {
@@ -144,10 +138,8 @@ int ffgetline(void)
 				free(fline);
 				fline = tmpline;
 			}
-#if	PKCODE
 		}
 		c = fgetc(ffp);
-#endif
 	}
 
 	/* test for any errors that may have occured */

@@ -42,9 +42,7 @@ static void tcapscrollregion(int top, int bot);
 static void putpad(char *str);
 
 static void tcapopen(void);
-#if PKCODE
 static void tcapclose(void);
-#endif
 
 #if COLOR
 static void tcapfcol(void);
@@ -59,9 +57,7 @@ static void tcapscroll_delins(int from, int to, int linestoscroll);
 static char tcapbuf[TCAPSLEN];
 static char *UP, PC, *CM, *CE, *CL, *SO, *SE;
 
-#if PKCODE
 static char *TI, *TE;
-#endif
 
 #if SCROLLCODE
 static char *CS, *DL, *AL, *SF, *SR;
@@ -76,11 +72,7 @@ struct terminal term = {
 	SCRSIZ,
 	NPAUSE,
 	tcapopen,
-#if	PKCODE
 	tcapclose,
-#else
-	ttclose,
-#endif
 	tcapkopen,
 	tcapkclose,
 	ttgetc,
@@ -159,7 +151,7 @@ static void tcapopen(void)
         SO = tgetstr("so", &p);
         if (SO != NULL)
                 revexist = TRUE;
-#if	PKCODE
+
         if (tgetnum("sg") > 0) {	/* can reverse be used? P.K. */
                 revexist = FALSE;
                 SE = NULL;
@@ -167,7 +159,6 @@ static void tcapopen(void)
         }
         TI = tgetstr("ti", &p);	/* terminal init and exit */
         TE = tgetstr("te", &p);
-#endif
 
         if (CL == NULL || CM == NULL || UP == NULL) {
                 puts("Incomplete termcap entry\n");
@@ -201,7 +192,7 @@ static void tcapopen(void)
 	ttopen();
 }
 
-#if	PKCODE
+
 static void tcapclose(void)
 {
 	putpad(tgoto(CM, 0, term.t_nrow));
@@ -209,14 +200,14 @@ static void tcapclose(void)
 	ttflush();
 	ttclose();
 }
-#endif
+
 
 static void tcapkopen(void)
 {
-#if	PKCODE
+
 	putpad(TI);
 	ttflush();
-#endif
+
 	strcpy(sres, "NORMAL");
 }
 

@@ -275,14 +275,10 @@ int gotobop(int f, int n)
 		   or a <NL><SPACE>                                     */
 		while (lback(curwp->w_dotp) != curbp->b_linep)
 			if (llength(curwp->w_dotp) != 0 &&
-#if	PKCODE
 			    ((justflag == TRUE) ||
-#endif
 			     (lgetc(curwp->w_dotp, curwp->w_doto) != TAB &&
 			      lgetc(curwp->w_dotp, curwp->w_doto) != ' '))
-#if	PKCODE
 			    )
-#endif
 				curwp->w_dotp = lback(curwp->w_dotp);
 			else
 				break;
@@ -323,14 +319,10 @@ int gotoeop(int f, int n)
 		   or a <NL><SPACE>                                     */
 		while (curwp->w_dotp != curbp->b_linep) {
 			if (llength(curwp->w_dotp) != 0 &&
-#if	PKCODE
 			    ((justflag == TRUE) ||
-#endif
 			     (lgetc(curwp->w_dotp, curwp->w_doto) != TAB &&
 			      lgetc(curwp->w_dotp, curwp->w_doto) != ' '))
-#if	PKCODE
 			    )
-#endif
 				curwp->w_dotp = lforw(curwp->w_dotp);
 			else
 				break;

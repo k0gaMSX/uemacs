@@ -69,14 +69,12 @@ int risearch(int f, int n)
 		curwp->w_flag |= WFMOVE;	/* Say we've moved                    */
 		update(FALSE);	/* And force an update                */
 		mlwrite("(search failed)");	/* Say we died                        */
-#if	PKCODE
 		matchlen = strlen(pat);
-#endif
 	} else
 		mlerase();	/* If happy, just erase the cmd line  */
-#if	PKCODE
+
 	matchlen = strlen(pat);
-#endif
+
 	return TRUE;
 }
 
@@ -101,14 +99,12 @@ int fisearch(int f, int n)
 		curwp->w_flag |= WFMOVE;	/* Say we've moved                    */
 		update(FALSE);	/* And force an update                */
 		mlwrite("(search failed)");	/* Say we died                        */
-#if	PKCODE
 		matchlen = strlen(pat);
-#endif
 	} else
 		mlerase();	/* If happy, just erase the cmd line  */
-#if	PKCODE
+
 	matchlen = strlen(pat);
-#endif
+
 	return TRUE;
 }
 

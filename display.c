@@ -249,10 +249,6 @@ int update(int force)
 {
 	struct window *wp;
 
-#if	TYPEAH && ! PKCODE
-	if (force == FALSE && typahead())
-		return TRUE;
-#endif
 #if	VISMAC == 0
 	if (force == FALSE && kbdmode == PLAY)
 		return TRUE;
@@ -642,10 +638,6 @@ int updupd(int force)
 
 		/* for each line that needs to be updated */
 		if ((vp1->v_flag & VFCHG) != 0) {
-#if	TYPEAH && ! PKCODE
-			if (force == FALSE && typahead())
-				return TRUE;
-#endif
 #if	!SCROLLCODE
 			updateline(i, vp1);
 #else
@@ -1041,26 +1033,17 @@ static void modeline(struct window *wp)
 #endif
 	vtmove(n, 0);		/* Seek to right line. */
 	if (wp == curwp)	/* mark the current buffer */
-#if	PKCODE
 		lchar = '-';
-#else
-		lchar = '=';
-#endif
 	else
 #if	REVSTA
-	if (revexist)
-		lchar = ' ';
-	else
+                if (revexist)
+                        lchar = ' ';
+                else
 #endif
-		lchar = '-';
+                        lchar = '-';
 
 	bp = wp->w_bufp;
-#if	PKCODE == 0
-	if ((bp->b_flag & BFTRUNC) != 0)
-		vtputc('#');
-	else
-#endif
-		vtputc(lchar);
+        vtputc(lchar);
 
 	if ((bp->b_flag & BFCHG) != 0)	/* "*" if changed. */
 		vtputc('*');
@@ -1110,21 +1093,7 @@ static void modeline(struct window *wp)
 		++n;
 	}
 
-#if	PKCODE
-	if (bp->b_fname[0] != 0 && strcmp(bp->b_bname, bp->b_fname) != 0)
-#else
-	if (bp->b_fname[0] != 0)	/* File name. */
-#endif
-	{
-#if	PKCODE == 0
-		cp = "File: ";
-
-		while ((c = *cp++) != 0) {
-			vtputc(c);
-			++n;
-		}
-#endif
-
+	if (bp->b_fname[0] != 0 && strcmp(bp->b_bname, bp->b_fname) != 0) {
 		cp = &bp->b_fname[0];
 
 		while ((c = *cp++) != 0) {

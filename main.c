@@ -133,12 +133,10 @@ int main(int argc, char **argv)
 	/* Parse the command line */
 	for (carg = 1; carg < argc; ++carg) {
 		/* Process Switches */
-#if	PKCODE
 		if (argv[carg][0] == '+') {
 			gotoflag = TRUE;
 			gline = atoi(&argv[carg][1]);
 		} else
-#endif
 		if (argv[carg][0] == '-') {
 			switch (argv[carg][1]) {
 				/* Process Startup macroes */
@@ -155,12 +153,10 @@ int main(int argc, char **argv)
 				gotoflag = TRUE;
 				gline = atoi(&argv[carg][2]);
 				break;
-#if	PKCODE
 			case 'n':	/* -n accept null chars */
 			case 'N':
 				nullflag = TRUE;
 				break;
-#endif
 			case 'r':	/* -r restrictive use */
 			case 'R':
 				restflag = TRUE;
@@ -256,7 +252,7 @@ int main(int argc, char **argv)
 	execute(META | SPEC | 'C', FALSE, 1);
 	lastflag = saveflag;
 
-#if TYPEAH && PKCODE
+#if TYPEAH
 	if (typahead()) {
 		newc = getcmd();
 		update(FALSE);
@@ -442,12 +438,8 @@ int execute(int c, int f, int n)
 	    (curwp->w_bufp->b_mode & MDVIEW) == FALSE)
 		execute(META | SPEC | 'W', FALSE, 1);
 
-#if	PKCODE
 	if ((c >= 0x20 && c <= 0x7E)	/* Self inserting.      */
 	    || (c >= 0xA0 && c <= 0xFE)) {
-#else
-	if ((c >= 0x20 && c <= 0xFF)) {	/* Self inserting.      */
-#endif
 		if (n <= 0) {	/* Fenceposts.          */
 			lastflag = 0;
 			return n < 0 ? FALSE : TRUE;
@@ -515,10 +507,7 @@ int quickexit(int f, int n)
 		    && (bp->b_flag & BFINVS) == 0) {	/* Real.                */
 			curbp = bp;	/* make that buffer cur */
 			mlwrite("(Saving %s)", bp->b_fname);
-#if	PKCODE
-#else
-			mlwrite("\n");
-#endif
+
 			if ((status = filesave(f, n)) != TRUE) {
 				curbp = oldcb;	/* restore curbp */
 				return status;

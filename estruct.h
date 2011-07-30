@@ -62,9 +62,6 @@
 
 /****************************************************************************/
 
-
-
-#define	PKCODE	1      /* include my extensions P.K., define always    */
 #define SCROLLCODE 1   /* scrolling code P.K.                          */
 
 /* System dependant library redefinitions, structures and includes. */
@@ -174,12 +171,9 @@
   #undef	islower
 #endif
 
-#if	PKCODE
-  #ifdef	isupper
-#undef	isupper
-  #endif
+#ifdef	isupper
+  #undef	isupper
 #endif
-
 
 #define	DIFCASE		0x20
 

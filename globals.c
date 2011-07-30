@@ -73,10 +73,8 @@ int saveflag = 0;		/* Flags, saved with the $target var */
 char *fline = NULL;		/* dynamic return line */
 int flen = 0;			/* current length of fline */
 int rval = 0;			/* return value of a subprocess */
-#if	PKCODE
 int nullflag = FALSE;		/* accept null characters */
 int justflag = FALSE;		/* justify, don't fill */
-#endif
 int overlap = 0;		/* line overlap in forw/back page */
 int scrollcount = 1;		/* number of lines to scroll */
 

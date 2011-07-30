@@ -133,9 +133,7 @@ struct name_bind names[] = {
 	{"insert-space", insspace},
 	{"insert-string", istring},
 #if	WORDPRO
-#if	PKCODE
 	{"justify-paragraph", justpara},
-#endif
 	{"kill-paragraph", killpara},
 #endif
 	{"kill-region", killregion},
