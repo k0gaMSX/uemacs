@@ -10,7 +10,7 @@
  */
 
 #include <stdio.h>
-
+#include <alloca.h>
 #include "estruct.h"
 #include "edef.h"
 #include "efunc.h"
@@ -120,8 +120,9 @@ int forwchar(int f, int n)
 int gotoline(int f, int n)
 {
 	int status;
-	char arg[NSTRING]; /* Buffer to hold argument. */
+	char *arg ;         /* Buffer to hold argument */
 
+        arg = alloca(NSTRING * sizeof(char));
 	/* Get an argument if one doesnt exist. */
 	if (f == FALSE) {
 		if ((status =

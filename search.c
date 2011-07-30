@@ -58,6 +58,7 @@
  */
 
 #include <stdio.h>
+#include <alloca.h>
 
 #include "estruct.h"
 #include "edef.h"

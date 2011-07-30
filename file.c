@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
+#include <alloca.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -188,8 +189,9 @@ int readin(char *fname)
 	int nbytes;
 	int nline;
 	int lflag;		/* any lines longer than allowed? */
-	char mesg[NSTRING];
+	char *mesg;
 
+        mesg = alloca(NSTRING * sizeof(char));
 	bp = curbp;		/* Cheap.               */
 	if ((s = bclear(bp)) != TRUE)	/* Might be old.        */
 		return s;
@@ -486,8 +488,9 @@ int ifile(char *fname)
 	int nbytes;
 	int nline;
 	int lflag;		/* any lines longer than allowed? */
-	char mesg[NSTRING];
+	char *mesg;
 
+        mesg = alloca(NSTRING * sizeof(char));
 	bp = curbp;		/* Cheap.               */
 	bp->b_flag |= BFCHG;	/* we have changed      */
 	bp->b_flag &= ~BFINVS;	/* and are not temporary */

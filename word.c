@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <alloca.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -408,8 +409,9 @@ int fillpara(int f, int n)
 	int firstflag;	/* first word? (needs no space) */
 	struct line *eopline;	/* pointer to line just past EOP */
 	int dotflag;	/* was the last char a period?  */
-	char wbuf[NSTRING];	/* buffer for current word      */
+	char *wbuf;	/* buffer for current word      */
 
+        wbuf = alloca(NSTRING * sizeof(char));
 	if (curbp->b_mode & MDVIEW)	/* don't allow this command if      */
 		return rdonly();	/* we are in read only mode     */
 	if (fillcol == 0) {	/* no fill column set */
@@ -504,9 +506,10 @@ int justpara(int f, int n)
 	int eopflag;	/* Are we at the End-Of-Paragraph? */
 	int firstflag;	/* first word? (needs no space) */
 	struct line *eopline;	/* pointer to line just past EOP */
-	char wbuf[NSTRING];	/* buffer for current word      */
+	char *wbuf;	/* buffer for current word      */
 	int leftmarg;		/* left marginal */
 
+        wbuf = alloca(NSTRING * sizeof(char));
 	if (curbp->b_mode & MDVIEW)	/* don't allow this command if      */
 		return rdonly();	/* we are in read only mode     */
 	if (fillcol == 0) {	/* no fill column set */

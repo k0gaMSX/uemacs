@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <alloca.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -45,8 +46,9 @@ int namedcmd(int f, int n)
 int execcmd(int f, int n)
 {
 	int status;	/* status return */
-	char cmdstr[NSTRING];	/* string holding command to execute */
+	char *cmdstr;	/* string holding command to execute */
 
+        cmdstr = alloca(NSTRING * sizeof(char));
 	/* get the line wanted */
 	if ((status = mlreply(": ", cmdstr, NSTRING)) != TRUE)
 		return status;
@@ -76,8 +78,9 @@ int docmd(char *cline)
 	int status;		/* return status of function */
 	int oldcle;		/* old contents of clexec flag */
 	char *oldestr;		/* original exec string */
-	char tkn[NSTRING];	/* next token off of command line */
+	char *tkn;	/* next token off of command line */
 
+        tkn = alloca(NSTRING * sizeof(char));
 	/* if we are scanning and not executing..go back here */
 	if (execlevel)
 		return TRUE;
@@ -374,8 +377,9 @@ int execbuf(int f, int n)
 {
 	struct buffer *bp;	/* ptr to buffer to execute */
 	int status;	/* status return */
-	char bufn[NSTRING];	/* name of buffer to execute */
+	char *bufn;	/* name of buffer to execute */
 
+        bufn = alloca(NSTRING * sizeof(char));
 	/* find out what buffer the user wants to execute */
 	if ((status = mlreply("Execute buffer: ", bufn, NBUFN)) != TRUE)
 		return status;
@@ -434,13 +438,14 @@ int dobuf(struct buffer *bp)
 	struct while_block *whtemp;	/* temporary ptr to a struct while_block */
 	char *einit;		/* initial value of eline */
 	char *eline;		/* text of line to execute */
-	char tkn[NSTRING];	/* buffer to evaluate an expresion in */
+	char *tkn;	/* buffer to evaluate an expresion in */
 
 #if	DEBUGM
 	char *sp;		/* temp for building debug string */
 	char *ep;	/* ptr to end of outline */
 #endif
 
+        tkn = alloca(NSTRING * sizeof(char));
 	/* clear IF level flags/while ptr */
 	execlevel = 0;
 	whlist = NULL;
@@ -850,9 +855,10 @@ void freewhile(struct while_block *wp)
 int execfile(int f, int n)
 {
 	int status;	/* return status of name query */
-	char fname[NSTRING];	/* name of file to execute */
+	char *fname;	/* name of file to execute */
 	char *fspec;		/* full file spec */
 
+        fname = alloca(NSTRING * sizeof(char));
 	if ((status =
 	     mlreply("File to execute: ", fname, NSTRING - 1)) != TRUE)
 		return status;

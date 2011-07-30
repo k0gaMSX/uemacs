@@ -8,6 +8,7 @@
  */
 
 #include <stdio.h>
+#include <alloca.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -61,8 +62,9 @@ int deskey(int f, int n)
 {				/* describe the command for a certain key */
 	int c;		/* key to describe */
 	char *ptr;	/* string pointer to scan output strings */
-	char outseq[NSTRING];	/* output buffer for command sequence */
+	char *outseq;	/* output buffer for command sequence */
 
+        outseq = alloca(NSTRING * sizeof(char));
 	/* prompt the user to type us a key to describe */
 	mlwrite(": describe-key ");
 
@@ -258,9 +260,10 @@ int desbind(int f, int n)
 
 int apro(int f, int n)
 {				/* Apropos (List functions that match a substring) */
-	char mstring[NSTRING];	/* string to match cmd names to */
+	char *mstring;	/* string to match cmd names to */
 	int status;		/* status return */
 
+        mstring = alloca(NSTRING * sizeof(char));
 	status = mlreply("Apropos string: ", mstring, NSTRING - 1);
 	if (status != TRUE)
 		return status;
@@ -427,8 +430,9 @@ int strinc(char *source, char *sub)
 unsigned int getckey(int mflag)
 {
 	unsigned int c;	/* character fetched */
-	char tok[NSTRING];	/* command incoming */
+	char *tok;	/* command incoming */
 
+        tok = alloca(NSTRING * sizeof(char));
 	/* check to see if we are executing a command line */
 	if (clexec) {
 		macarg(tok);	/* get the next token */
@@ -480,8 +484,9 @@ char *flook(char *fname, int hflag)
 	char *path;	/* environmental PATH variable */
 	char *sp;	/* pointer into path spec */
 	int i;		/* index */
-	static char fspec[NSTRING];	/* full path spec to search */
+	char *fspec;	/* full path spec to search */
 
+        fspec = alloca(NSTRING * sizeof(char));
 	if (hflag) {
 		home = getenv("HOME");
 		if (home != NULL) {

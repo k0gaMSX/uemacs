@@ -157,8 +157,7 @@ int pipecmd(int f, int n)
 	struct buffer *bp;	/* pointer to buffer to zot */
 	char line[NLINE];	/* command line send to shell */
 	static char bname[] = "command";
-
-	static char filnam[NSTRING] = "command";
+	static char filnam[] = "command";
 
 	/* don't allow this command if restricted */
 	if (restflag)

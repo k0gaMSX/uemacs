@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <alloca.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -39,11 +40,14 @@ char *gtfun(char *fname)
 	int fnum;	/* index to function to eval */
 	int status;	/* return status */
 	char *tsp;	/* temporary string pointer */
-	char arg1[NSTRING];	/* value of first argument */
-	char arg2[NSTRING];	/* value of second argument */
-	char arg3[NSTRING];	/* value of third argument */
+	char *arg1;	/* value of first argument */
+	char *arg2;	/* value of second argument */
+	char *arg3;	/* value of third argument */
 	static char result[2 * NSTRING];	/* string result */
 
+        arg1  = alloca(NSTRING * sizeof(char));
+        arg2  = alloca(NSTRING * sizeof(char));
+        arg3  = alloca(NSTRING * sizeof(char));
 	/* look the function up in the function table */
 	fname[3] = 0;		/* only first 3 chars significant */
 	mklower(fname);		/* and let it be upper or lower case */
@@ -355,8 +359,9 @@ int setvar(int f, int n)
 #endif
 	struct variable_description vd;		/* variable num/type */
 	char var[NVSIZE + 1];	/* name of variable to fetch */
-	char value[NSTRING];	/* value to set variable to */
+	char *value;	        /* value to set variable to */
 
+        value = alloca(NSTRING * sizeof(char));
 	/* first get the variable to set.. */
 	if (clexec == FALSE) {
 		status = mlreply("Variable to set: ", &var[0], NVSIZE);

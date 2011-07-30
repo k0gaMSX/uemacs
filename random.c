@@ -7,6 +7,8 @@
  */
 
 #include <stdio.h>
+#include <alloca.h>
+
 
 #include "estruct.h"
 #include "edef.h"
@@ -484,8 +486,9 @@ int cinsert(void)
 	int tptr;	/* index to scan into line */
 	int bracef;	/* was there a brace at the end of line? */
 	int i;
-	char ichar[NSTRING];	/* buffer to hold indent of last line */
+	char *ichar;	/* buffer to hold indent of last line */
 
+        ichar = alloca(NSTRING * sizeof(char));
 	/* grab a pointer to text to copy indentation from */
 	cptr = &curwp->w_dotp->l_text[0];
 
