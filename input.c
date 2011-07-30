@@ -7,7 +7,6 @@
  */
 
 #include <stdio.h>
-#include <unistd.h>
 #include <ctype.h>
 
 #include "estruct.h"
@@ -590,7 +589,7 @@ int getstring(char *prompt, char *buf, int nbuf, int eolchar)
 			}
 			TTflush();
 			rewind(tmpf);
-			unlink(tmp);
+			remove(tmp);
 
 		} else if ((c == quotec || c == 0x16) && quotef == FALSE) {
 			quotef = TRUE;
