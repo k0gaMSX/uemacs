@@ -66,8 +66,11 @@
 #define GOOD    0
 #endif
 
-#include <signal.h>
-static void emergencyexit(int);
+#if SIGHUP && SIGTERM
+  #include <signal.h>
+  static void emergencyexit(int);
+#endif
+
 #ifdef SIGWINCH
 extern void sizesignal(int);
 #endif
@@ -204,8 +207,11 @@ int main(int argc, char **argv)
 				bp->b_mode |= MDVIEW;
                 }
         }
+
+#if SIGHUP && SIGTERM
 	signal(SIGHUP, emergencyexit);
 	signal(SIGTERM, emergencyexit);
+#endif
 
 	/* if we are C error parsing... run it! */
 	if (errflag) {
@@ -519,12 +525,15 @@ int quickexit(int f, int n)
 	return TRUE;
 }
 
+#if SIGHUP && SIGTERM
+
 static void emergencyexit(int signr)
 {
 	quickexit(FALSE, 0);
 	quit(TRUE, 0);
 }
 
+#endif
 /*
  * Quit command. If an argument, always quit. Otherwise confirm if a buffer
  * has been changed and not written out. Normally bound to "C-X C-C".
