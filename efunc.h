@@ -351,6 +351,3 @@ extern int sindex(char *source, char *pattern);
 extern char *xlat(char *source, char *lookup, char *trans);
 
 
-/* pklock.c */
-extern char *dolock(char *fname);
-extern char *undolock(char *fname);
