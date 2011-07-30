@@ -23,6 +23,7 @@
  */
 
 #include <stdio.h>
+#include <alloca.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -141,11 +142,12 @@ int isearch(int f, int n)
 	int cpos;	/* character number in search string  */
 	int c;		/* current input character */
 	int expc;	/* function expanded input char       */
-	char pat_save[NPAT];	/* Saved copy of the old pattern str  */
+	char *pat_save;	/* Saved copy of the old pattern str  */
 	struct line *curline;		/* Current line on entry              */
 	int curoff;		/* Current offset on entry            */
 	int init_direction;	/* The initial search direction       */
 
+        pat_save = alloca(NPAT * sizeof(char));
 	/* Initialize starting conditions */
 
 	cmd_reexecute = -1;	/* We're not re-executing (yet?)      */

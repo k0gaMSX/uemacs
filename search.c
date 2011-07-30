@@ -614,8 +614,9 @@ int eq(unsigned char bc, unsigned char pc)
 static int readpattern(char *prompt, char *apat, int srch)
 {
 	int status;
-	char tpat[NPAT + 20];
+	char *tpat;
 
+        tpat = alloca((NPAT +20) * sizeof(char));
 	strcpy(tpat, prompt);	/* copy prompt to output string */
 	strcat(tpat, " (");	/* build new prompt string */
 	expandp(&apat[0], &tpat[strlen(tpat)], NPAT / 2);	/* add old pattern */
@@ -735,12 +736,13 @@ static int replaces(int kind, int f, int n)
 	int nlflag;		/* last char of search string a <NL>? */
 	int nlrepl;		/* was a replace done on the last line? */
 	char c;			/* input char for query */
-	char tpat[NPAT];	/* temporary to hold search pattern */
+	char *tpat;	/* temporary to hold search pattern */
 	struct line *origline;		/* original "." position */
 	int origoff;		/* and offset (for . query option) */
 	struct line *lastline;		/* position of last replace and */
 	int lastoff;		/* offset (for 'u' query option) */
 
+        tpat = alloca(NPAT * sizeof(char));
 	if (curbp->b_mode & MDVIEW)	/* don't allow this command if      */
 		return rdonly();	/* we are in read only mode     */
 
@@ -1370,7 +1372,6 @@ static int mceq(int bc, struct magic *mt)
 	return result;
 }
 
-extern char *clearbits(void);
 
 /*
  * cclmake -- create the bitmap for the character class.

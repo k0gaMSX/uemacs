@@ -881,9 +881,10 @@ int adjustmode(int kind, int global)
 #if	COLOR
 	int uflag;	/* was modename uppercase?      */
 #endif
-	char prompt[50];	/* string to prompt user with */
-	char cbuf[NPAT];	/* buffer to recieve mode name into */
+	char prompt[50]; /* string to prompt user with */
+        char *cbuf;	 /* buffer to recieve mode name into */
 
+        cbuf = alloca(NPAT * sizeof(char));
 	/* build the proper prompt string */
 	if (global)
 		strcpy(prompt, "Global mode to ");
@@ -984,9 +985,11 @@ int writemsg(int f, int n)
 	char *sp;	/* pointer into buf to expand %s */
 	char *np;	/* ptr into nbuf */
 	int status;
-	char buf[NPAT];		/* buffer to recieve message into */
-	char nbuf[NPAT * 2];	/* buffer to expand string into */
+	char *buf;		/* buffer to recieve message into */
+	char *nbuf;	/* buffer to expand string into */
 
+        buf = alloca(NPAT * sizeof(char));
+        nbuf = alloca(2 * NPAT * sizeof(char));
 	if ((status =
 	     mlreply("Message to write: ", buf, NPAT - 1)) != TRUE)
 		return status;
@@ -1182,8 +1185,9 @@ int fmatch(int ch)
 int istring(int f, int n)
 {
 	int status;	/* status return code */
-	char tstring[NPAT + 1];	/* string to add */
+	char *tstring;	/* string to add */
 
+        tstring = alloca((NPAT + 1) * sizeof(char));
 	/* ask for string to insert */
 	status =
 	    mlreplyt("String to insert<META>: ", tstring, NPAT, metac);
@@ -1210,8 +1214,9 @@ int istring(int f, int n)
 int ovstring(int f, int n)
 {
 	int status;	/* status return code */
-	char tstring[NPAT + 1];	/* string to add */
+	char *tstring;	/* string to add */
 
+        tstring = alloca(2 * (NPAT + 1) * sizeof(char));
 	/* ask for string to insert */
 	status =
 	    mlreplyt("String to overwrite<META>: ", tstring, NPAT, metac);
