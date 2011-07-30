@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <alloca.h>
+#include <limits.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -16,7 +17,11 @@
 #include "line.h"
 
 /* Max number of lines from one file. */
-#define	MAXNLINE 10000000
+#if 10000000 > INT_MAX
+  #define       MAXNLINE  INT_MAX
+#else
+  #define       MAXNLINE  10000000
+#endif
 
 /*
  * Read a file into the current
