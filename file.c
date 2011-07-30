@@ -36,7 +36,7 @@ int fileread(int f, int n)
 		return resterr();
 	if ((s = mlreply("Read file: ", fname, NFILEN)) != TRUE)
 		return s;
-	return readin(fname, TRUE);
+	return readin(fname);
 }
 
 /*
@@ -80,7 +80,7 @@ int filefind(int f, int n)
 		return resterr();
 	if ((s = mlreply("Find file: ", fname, NFILEN)) != TRUE)
 		return s;
-	return getfile(fname, TRUE);
+	return getfile(fname);
 }
 
 int viewfile(int f, int n)
@@ -93,7 +93,7 @@ int viewfile(int f, int n)
 		return resterr();
 	if ((s = mlreply("View file: ", fname, NFILEN)) != TRUE)
 		return s;
-	s = getfile(fname, FALSE);
+	s = getfile(fname);
 	if (s) {		/* if we succeed, put it in view mode */
 		curwp->w_bufp->b_mode |= MDVIEW;
 
@@ -114,7 +114,7 @@ int viewfile(int f, int n)
  * char fname[];	file name to find
  * int lockfl;		check the file for locks?
  */
-int getfile(char *fname, int lockfl)
+int getfile(char *fname)
 {
 	struct buffer *bp;
 	struct line *lp;
@@ -161,7 +161,7 @@ int getfile(char *fname, int lockfl)
 	curbp = bp;		/* Switch to it.        */
 	curwp->w_bufp = bp;
 	curbp->b_nwnd++;
-	s = readin(fname, lockfl);	/* Read it in.          */
+	s = readin(fname);	/* Read it in.          */
 	cknewwindow();
 	return s;
 }
@@ -177,7 +177,7 @@ int getfile(char *fname, int lockfl)
  * char fname[];	name of file to read
  * int lockfl;		check for file locks?
  */
-int readin(char *fname, int lockfl)
+int readin(char *fname)
 {
 	struct line *lp1;
 	struct line *lp2;
@@ -189,18 +189,6 @@ int readin(char *fname, int lockfl)
 	int nline;
 	int lflag;		/* any lines longer than allowed? */
 	char mesg[NSTRING];
-
-	if (lockfl && lockchk(fname) == ABORT)
-#if PKCODE
-	{
-		s = FIOFNF;
-		bp = curbp;
-		strcpy(bp->b_fname, "");
-		goto out;
-	}
-#else
-		return ABORT;
-#endif
 
 	bp = curbp;		/* Cheap.               */
 	if ((s = bclear(bp)) != TRUE)	/* Might be old.        */

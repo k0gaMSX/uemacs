@@ -210,7 +210,7 @@ int pipecmd(int f, int n)
 		return FALSE;
 
 	/* and read the stuff in */
-	if (getfile(filnam, FALSE) == FALSE)
+	if (getfile(filnam) == FALSE)
 		return FALSE;
 
 	/* make this window in VIEW mode, update all mode lines */
@@ -275,7 +275,7 @@ int filter_buffer(int f, int n)
 	s = TRUE;
 
 	/* on failure, escape gracefully */
-	if (s != TRUE || (readin(filnam2, FALSE) == FALSE)) {
+	if (s != TRUE || (readin(filnam2) == FALSE)) {
 		mlwrite("(Execution failed)");
 		strcpy(bp->b_fname, tmpnam);
 		unlink(filnam1);

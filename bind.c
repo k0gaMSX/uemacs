@@ -41,7 +41,7 @@ int help(int f, int n)
 
 	if (bp == NULL) {
 		/* and read the stuff in */
-		if (getfile(fname, FALSE) == FALSE)
+		if (getfile(fname) == FALSE)
 			return FALSE;
 	} else
 		swbuffer(bp);

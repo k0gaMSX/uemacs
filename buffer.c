@@ -91,7 +91,7 @@ int swbuffer(struct buffer *bp)
 	curbp = bp;		/* Switch.              */
 	if (curbp->b_active != TRUE) {	/* buffer not active yet */
 		/* read it in and activate it */
-		readin(curbp->b_fname, TRUE);
+		readin(curbp->b_fname);
 		curbp->b_dotp = lforw(curbp->b_linep);
 		curbp->b_doto = 0;
 		curbp->b_active = TRUE;

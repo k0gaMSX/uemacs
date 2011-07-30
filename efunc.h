@@ -212,8 +212,8 @@ extern int fileread(int f, int n);
 extern int insfile(int f, int n);
 extern int filefind(int f, int n);
 extern int viewfile(int f, int n);
-extern int getfile(char *fname, int lockfl);
-extern int readin(char *fname, int lockfl);
+extern int getfile(char *fname);
+extern int readin(char *fname);
 extern void makename(char *bname, char *fname);
 extern void unqname(char *name);
 extern int filewrite(int f, int n);
@@ -350,12 +350,6 @@ extern int ernd(void);
 extern int sindex(char *source, char *pattern);
 extern char *xlat(char *source, char *lookup, char *trans);
 
-/* lock.c */
-extern int lockchk(char *fname);
-extern int lockrel(void);
-extern int lock(char *fname);
-extern int unlock(char *fname);
-extern void lckerror(char *errstr);
 
 /* pklock.c */
 extern char *dolock(char *fname);

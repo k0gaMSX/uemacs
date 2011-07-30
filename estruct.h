@@ -53,8 +53,6 @@
 #define	VT52	0
 #define	TERMCAP	1
 
-#define     FILOCK  1
-
 #define	XONXOFF	1
 #define	NATIONL	1
 

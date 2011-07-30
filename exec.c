@@ -897,7 +897,7 @@ int dofile(char *fname)
 	cb = curbp;		/* save the old buffer */
 	curbp = bp;		/* make this one current */
 	/* and try to read in the file to execute */
-	if ((status = readin(fname, FALSE)) != TRUE) {
+	if ((status = readin(fname)) != TRUE) {
 		curbp = cb;	/* restore the current buffer */
 		return status;
 	}
