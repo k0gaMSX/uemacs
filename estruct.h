@@ -167,13 +167,6 @@
    case letters is the opposite of ascii in ebcdic.
 */
 
-#ifdef	islower
-  #undef	islower
-#endif
-
-#ifdef	isupper
-  #undef	isupper
-#endif
 
 #define	DIFCASE		0x20
 
