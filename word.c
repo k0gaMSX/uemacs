@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <alloca.h>
+#include <ctype.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -362,7 +363,7 @@ int inword(void)
 	if (curwp->w_doto == llength(curwp->w_dotp))
 		return FALSE;
 	c = lgetc(curwp->w_dotp, curwp->w_doto);
-	if (isletter(c))
+	if (isalpha(c))
 		return TRUE;
 
         if (isdigit(c))
@@ -656,8 +657,7 @@ int wordcount(int f, int n)
 		}
 
 		/* and tabulate it */
-
-		if ((isletter(ch) || isdigit(ch))  && lastword)
+		if (isalnum(ch)  && lastword)
                         ++nwords, lastword = 1;
                 else
                         lastword = 1;

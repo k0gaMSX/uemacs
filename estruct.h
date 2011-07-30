@@ -186,14 +186,6 @@
 #endif
 
 
-#define isletter(c)	isxletter((0xFF & (c)))
-#define islower(c)	isxlower((0xFF & (c)))
-#define isupper(c)	isxupper((0xFF & (c)))
-
-#define isxletter(c)	(('a' <= c && LASTLL >= c) || ('A' <= c && LASTUL >= c) || (192<=c && c<=255))
-#define isxlower(c)	(('a' <= c && LASTLL >= c) || (224 <= c && 252 >= c))
-#define isxupper(c)	(('A' <= c && LASTUL >= c) || (192 <= c && 220 >= c))
-
 
 /*	Dynamic RAM tracking and reporting redefinitions	*/
 

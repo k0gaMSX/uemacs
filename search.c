@@ -59,6 +59,7 @@
 
 #include <stdio.h>
 #include <alloca.h>
+#include <ctype.h>
 
 #include "estruct.h"
 #include "edef.h"
@@ -1344,7 +1345,7 @@ static int mceq(int bc, struct magic *mt)
 	case CCL:
 		if (!(result = biteq(bc, mt->u.cclmap))) {
 			if ((curwp->w_bufp->b_mode & MDEXACT) == 0 &&
-			    (isletter(bc))) {
+			    (isalpha(bc))) {
 				result = biteq(CHCASE(bc), mt->u.cclmap);
 			}
 		}
@@ -1354,7 +1355,7 @@ static int mceq(int bc, struct magic *mt)
 		result = !biteq(bc, mt->u.cclmap);
 
 		if ((curwp->w_bufp->b_mode & MDEXACT) == 0 &&
-		    (isletter(bc))) {
+		    (isalpha(bc))) {
 			result &= !biteq(CHCASE(bc), mt->u.cclmap);
 		}
 		break;
